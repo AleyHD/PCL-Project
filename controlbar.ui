@@ -1,0 +1,349 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>ControlBar</class>
+ <widget class="QDialog" name="ControlBar">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>341</width>
+    <height>483</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Dialog</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
+    <layout class="QVBoxLayout" name="verticalLayout_Visualizer">
+     <item>
+      <widget class="QLabel" name="label_visualizer">
+       <property name="font">
+        <font>
+         <weight>75</weight>
+         <bold>true</bold>
+        </font>
+       </property>
+       <property name="text">
+        <string>Cloud Visualizer</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="Line" name="line_visualizer">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout_visualizerEnableCos">
+       <item>
+        <widget class="QCheckBox" name="checkBox_enableCos">
+         <property name="text">
+          <string>Enable Coordinate System</string>
+         </property>
+         <property name="checked">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QDoubleSpinBox" name="doubleSpinBox_visualizerCosScale">
+         <property name="maximum">
+          <double>10000.000000000000000</double>
+         </property>
+         <property name="value">
+          <double>100.000000000000000</double>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="label_visualizerCosScale">
+         <property name="text">
+          <string>Scale</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+     <item>
+      <widget class="QCheckBox" name="checkBox_visualizerShowHeadUpDisplay">
+       <property name="text">
+        <string>Show Head Up Display</string>
+       </property>
+       <property name="checked">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="pushButton_visualizerResetCamera">
+       <property name="text">
+        <string>Reset Camera</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <layout class="QVBoxLayout" name="verticalLayout_cloud">
+     <item>
+      <widget class="QLabel" name="label_cloud">
+       <property name="font">
+        <font>
+         <weight>75</weight>
+         <bold>true</bold>
+        </font>
+       </property>
+       <property name="text">
+        <string>Cloud</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="Line" name="line_cloud">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout_cloudActiveCloud">
+       <item>
+        <widget class="QLabel" name="label_cloudActiveCloud">
+         <property name="text">
+          <string>Active Cloud:</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QComboBox" name="comboBox_cloudActiveCloud"/>
+       </item>
+      </layout>
+     </item>
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout_cloudMoveX">
+       <item>
+        <widget class="QLabel" name="label_cloudTranslationX">
+         <property name="text">
+          <string>Translation X:</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QDoubleSpinBox" name="doubleSpinBox_cloudTranslationX"/>
+       </item>
+       <item>
+        <widget class="QLabel" name="label_cloudRotationX">
+         <property name="text">
+          <string>Rotation @ X:</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QDoubleSpinBox" name="doubleSpinBox_cloudRotationX"/>
+       </item>
+      </layout>
+     </item>
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout_cloudMoveY">
+       <item>
+        <widget class="QLabel" name="label_cloudTranslationY">
+         <property name="text">
+          <string>Translation Y:</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QDoubleSpinBox" name="doubleSpinBox_cloudTranslationY"/>
+       </item>
+       <item>
+        <widget class="QLabel" name="label_cloudRotationY">
+         <property name="text">
+          <string>Rotation @ Y:</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QDoubleSpinBox" name="doubleSpinBox_cloudRotationY"/>
+       </item>
+      </layout>
+     </item>
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout_cloudMoveZ">
+       <item>
+        <widget class="QLabel" name="label_cloudTranslationZ">
+         <property name="text">
+          <string>Translation Z:</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QDoubleSpinBox" name="doubleSpinBox_cloudTranslationZ"/>
+       </item>
+       <item>
+        <widget class="QLabel" name="label_doubleSpinBox_cloudRotationZ">
+         <property name="text">
+          <string>Rotation @ Z:</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QDoubleSpinBox" name="doubleSpinBox_cloudRotationZ"/>
+       </item>
+      </layout>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <layout class="QVBoxLayout" name="verticalLayout_cropBox">
+     <item>
+      <widget class="QLabel" name="label_cropBox">
+       <property name="font">
+        <font>
+         <weight>75</weight>
+         <bold>true</bold>
+        </font>
+       </property>
+       <property name="text">
+        <string>CropBox</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="Line" name="line_cropBox">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout_cropBoxCheckBox">
+       <item>
+        <widget class="QCheckBox" name="checkBox_cropBoxEnableCropBox">
+         <property name="text">
+          <string>Enable CropBox</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QCheckBox" name="checkBox_cropBoxHighlight">
+         <property name="text">
+          <string>Highlight Points</string>
+         </property>
+         <property name="checked">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout_cropBoxSize">
+       <item>
+        <widget class="QDoubleSpinBox" name="doubleSpinBox_cropBoxSizeX"/>
+       </item>
+       <item>
+        <widget class="QLabel" name="label_cropBoxSizeX">
+         <property name="text">
+          <string>Size X</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QDoubleSpinBox" name="doubleSpinBox_cropBoxSizeY"/>
+       </item>
+       <item>
+        <widget class="QLabel" name="label_cropBoxSizeY">
+         <property name="text">
+          <string>Size Y</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout_cropBoxMovementFactor">
+       <item>
+        <widget class="QLabel" name="label_cropBoxMovementFactor">
+         <property name="text">
+          <string>Movement Factor:</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QDoubleSpinBox" name="doubleSpinBox_cropBoxMovementFactor">
+         <property name="singleStep">
+          <double>0.100000000000000</double>
+         </property>
+         <property name="value">
+          <double>1.000000000000000</double>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <layout class="QVBoxLayout" name="verticalLayout_filter">
+     <item>
+      <widget class="QLabel" name="label_filter">
+       <property name="font">
+        <font>
+         <weight>75</weight>
+         <bold>true</bold>
+        </font>
+       </property>
+       <property name="text">
+        <string>Extractor</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="Line" name="line_filter">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="pushButton_extractorExtractPlane">
+       <property name="text">
+        <string>Extract Plane</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <spacer name="verticalSpacer_bottom">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>20</width>
+       <height>7</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
