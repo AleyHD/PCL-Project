@@ -8,9 +8,9 @@
 #include <QKeyEvent>
 
 #include "controlbar.h"
-#include "../Libs/pointcloud.h"
-#include "../Libs/pointcloudvisualizer.h"
-#include "../Libs/cropbox.h"
+#include "Libs/pointcloud.h"
+#include "Libs/pointcloudvisualizer.h"
+#include "Libs/cropbox.h"
 
 namespace Ui {
 class MainWindow;
