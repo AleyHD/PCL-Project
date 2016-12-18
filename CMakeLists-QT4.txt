@@ -1,6 +1,6 @@
 CMAKE_MINIMUM_REQUIRED (VERSION 2.6 FATAL_ERROR)
 
-SET (PROJECT_NAME PCL-Task2)                 # Defines the project name
+SET (PROJECT_NAME PCL-Project)                 # Defines the project name
 
 PROJECT (${PROJECT_NAME})
 
