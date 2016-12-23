@@ -4,7 +4,7 @@ SET (PROJECT_NAME PCL-Project)                 # Defines the project name
 
 PROJECT (${PROJECT_NAME})
 
-FIND_PACKAGE (Qt5 REQUIRED COMPONENTS Widgets Core)
+FIND_PACKAGE (Qt4 REQUIRED)
 FIND_PACKAGE (VTK REQUIRED)
 FIND_PACKAGE (PCL 1.8 REQUIRED)
 
@@ -16,33 +16,31 @@ SET (PROJECT_SOURCES  main.cpp                # Add cpp Files
                       mainwindow.cpp
                       controlbar.cpp
                       Libs/pointcloud.cpp
-                      Libs/cropbox.cpp
                       Libs/pointcloudvisualizer.cpp
-                      #Libs/threadmanager.cpp
-                      #Libs/taskmanager.cpp
+                      Libs/cropbox.cpp
                       )
 SET (PROJECT_HEADERS  mainwindow.h            # Add h Files
                       controlbar.h
                       Libs/pointcloud.h
-                      Libs/cropbox.h
                       Libs/pointcloudvisualizer.h
-                      #Libs/threadmanager.h
-                      #Libs/taskmanager.h
+                      Libs/cropbox.h
                       )
 SET (PROJECT_FORMS    mainwindow.ui           # Add ui Files
                       controlbar.ui
                       )
 
-QT5_WRAP_CPP (PROJECT_HEADERS_MOC   ${PROJECT_HEADERS})
-QT5_WRAP_UI  (PROJECT_FORMS_HEADERS ${PROJECT_FORMS})
+QT4_WRAP_CPP (PROJECT_HEADERS_MOC   ${PROJECT_HEADERS})
+QT4_WRAP_UI  (PROJECT_FORMS_HEADERS ${PROJECT_FORMS})
+
+INCLUDE         (${QT_USE_FILE})
+ADD_DEFINITIONS (${QT_DEFINITIONS})
 
 INCLUDE_DIRECTORIES (${PROJECT_SOURCE_DIR})
 INCLUDE_DIRECTORIES (${PROJECT_BINARY_DIR})
 
 ADD_EXECUTABLE  (${PROJECT_NAME} ${PROJECT_SOURCES}
-                          ${PROJECT_FORMS_HEADERS}
-                          ${PROJECT_HEADERS_MOC})
+                                 ${PROJECT_FORMS_HEADERS}
+                                 ${PROJECT_HEADERS_MOC})
 
-TARGET_LINK_LIBRARIES (${PROJECT_NAME} ${PCL_LIBRARIES})
+TARGET_LINK_LIBRARIES (${PROJECT_NAME} ${QT_LIBRARIES} ${PCL_LIBRARIES})
 
-SET (IGNORE ${QT_QMAKE_EXECUTABLE})

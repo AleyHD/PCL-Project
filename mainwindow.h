@@ -45,6 +45,7 @@ private:
     void setupCloud(QString &filePath);
     void addCloud(PointCloud* cloud);
     void delCloud();
+    void delClouds();
     void changeActiveCloud();
     void setupCropBox();
     void enableCropBox();

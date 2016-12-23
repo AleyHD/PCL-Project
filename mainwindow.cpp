@@ -91,12 +91,28 @@ void MainWindow::delCloud()
 
     int cloudIndex = clouds_.indexOf(currentCloud_);
     clouds_.remove(cloudIndex);
-    if (!clouds_.size()) currentCloud_ = NULL;
+    if (clouds_.isEmpty()) {    // no cloud left
+        delete currentCloud_;
+        currentCloud_ = NULL;
+    }
     else currentCloud_ = clouds_.at(0);
     // update
     cropBox_->setActiveCloud(currentCloud_);
     visualizer_->updateHeadUpDisplay(currentCloud_);
+}
 
+void MainWindow::delClouds()
+{
+    if (!currentCloud_) return;
+
+     visualizer_->removeAllPointClouds();
+
+    qDeleteAll(clouds_);
+    clouds_.clear();
+    currentCloud_ = NULL;
+    // update
+    cropBox_->setActiveCloud(currentCloud_);
+    visualizer_->updateHeadUpDisplay(currentCloud_);
 }
 
 void MainWindow::changeActiveCloud()
@@ -205,7 +221,7 @@ bool MainWindow::eventFilter(QObject *object, QEvent *event)
 
 void MainWindow::on_action_unloadAllClouds_triggered()
 {
-    visualizer_->removeAllPointClouds();
+    this->delClouds();
 }
 
 void MainWindow::on_action_showControlBar_triggered()

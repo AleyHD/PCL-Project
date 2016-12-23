@@ -122,6 +122,11 @@ void CropBox::cropCloud()
 }
 
 void CropBox::setActiveCloud(PointCloud *cloud) {
+    // check for valid cloud pointer
+    if (!cloud) {
+        activeCloud_ = NULL;
+        return;
+    }
     cropBox_.setInputCloud(cloud->pclCloud());
     activeCloud_ = cloud;
 }

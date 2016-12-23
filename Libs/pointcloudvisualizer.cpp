@@ -74,8 +74,6 @@ void PointCloudVisualizer::addCropBox(CropBox *cropBox, double red, double green
     connect(cropBox, SIGNAL(transformApplied()), this, SLOT(updateShapePose()));
     connect(cropBox, SIGNAL(cloudCropped(PointCloud*)), this, SLOT(updateCloud(PointCloud*)));
 
-    visualizer_->updateShapePose(name, cropBox->transformMatrix());
-
     // update
     this->updateWidget();
 }
