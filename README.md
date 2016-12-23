@@ -6,4 +6,4 @@ Compile Instructions
 3. Open Project -> Choose the CMakeLists.txt  
 4. Compile  
 
-Note: The CMakeLists.txt uses Qt5 and PCL-1.8. In Case of Compatibility issues use CMakeLists-QT4.txt instead. CMakeLists-QT4.txt is based on Qt4 and PCL-1.7.  
+Note: Tested on Ubuntu 14.04, VTK 6.0, PCL 1.8 (master)
