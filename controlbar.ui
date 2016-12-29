@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>341</width>
-    <height>483</height>
+    <height>449</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -100,7 +100,7 @@
         </font>
        </property>
        <property name="text">
-        <string>Cloud</string>
+        <string>Active Cloud</string>
        </property>
        <property name="alignment">
         <set>Qt::AlignCenter</set>
@@ -113,20 +113,6 @@
         <enum>Qt::Horizontal</enum>
        </property>
       </widget>
-     </item>
-     <item>
-      <layout class="QHBoxLayout" name="horizontalLayout_cloudActiveCloud">
-       <item>
-        <widget class="QLabel" name="label_cloudActiveCloud">
-         <property name="text">
-          <string>Active Cloud:</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QComboBox" name="comboBox_cloudActiveCloud"/>
-       </item>
-      </layout>
      </item>
      <item>
       <layout class="QHBoxLayout" name="horizontalLayout_cloudMoveX">
@@ -200,6 +186,48 @@
        </item>
       </layout>
      </item>
+     <item>
+      <layout class="QVBoxLayout" name="verticalLayout_cloudDestionation">
+       <item>
+        <layout class="QHBoxLayout" name="horizontalLayout_cloudDestinationChooser">
+         <item>
+          <widget class="QLabel" name="label_cloudMerge">
+           <property name="text">
+            <string>Destination Cloud:</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QComboBox" name="comboBox_cloudDestination"/>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <layout class="QHBoxLayout" name="horizontalLayout_cloudDestinationAction">
+         <item>
+          <widget class="QPushButton" name="pushButton_cloudMerge">
+           <property name="enabled">
+            <bool>true</bool>
+           </property>
+           <property name="text">
+            <string>Merge into Destination</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="pushButton_cloudAppend">
+           <property name="enabled">
+            <bool>true</bool>
+           </property>
+           <property name="text">
+            <string>Append to Destination</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+      </layout>
+     </item>
     </layout>
    </item>
    <item>
@@ -233,6 +261,9 @@
         <widget class="QCheckBox" name="checkBox_cropBoxEnableCropBox">
          <property name="text">
           <string>Enable CropBox</string>
+         </property>
+         <property name="checked">
+          <bool>true</bool>
          </property>
         </widget>
        </item>
@@ -294,53 +325,6 @@
       </layout>
      </item>
     </layout>
-   </item>
-   <item>
-    <layout class="QVBoxLayout" name="verticalLayout_filter">
-     <item>
-      <widget class="QLabel" name="label_filter">
-       <property name="font">
-        <font>
-         <weight>75</weight>
-         <bold>true</bold>
-        </font>
-       </property>
-       <property name="text">
-        <string>Extractor</string>
-       </property>
-       <property name="alignment">
-        <set>Qt::AlignCenter</set>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="Line" name="line_filter">
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QPushButton" name="pushButton_extractorExtractPlane">
-       <property name="text">
-        <string>Extract Plane</string>
-       </property>
-      </widget>
-     </item>
-    </layout>
-   </item>
-   <item>
-    <spacer name="verticalSpacer_bottom">
-     <property name="orientation">
-      <enum>Qt::Vertical</enum>
-     </property>
-     <property name="sizeHint" stdset="0">
-      <size>
-       <width>20</width>
-       <height>7</height>
-      </size>
-     </property>
-    </spacer>
    </item>
   </layout>
  </widget>
