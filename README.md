@@ -30,7 +30,7 @@ cd ~/Downloads
 git clone https://github.com/PointCloudLibrary/pcl.git  
 cd pcl  
 mkdir release && cd release  
-cmake -DCMAKE_BUILD_TYPE=None -DBUILD_GPU=ON -DBUILD_apps=ON -DBUILD_examples=ON -DCMAKE_INSTALL_PREFIX=/usr ..  
+cmake -DCMAKE_BUILD_TYPE=None -DBUILD_GPU=ON -DCMAKE_INSTALL_PREFIX=/usr ..  
 make  
 sudo make install  
 
