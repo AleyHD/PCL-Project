@@ -19,6 +19,7 @@ sudo apt-get install libgl1-mesa-dev mesa-utils libglew-dev libsdl2-dev libsdl2-
 sudo apt-get install libboost-all-dev  
 sudo apt-get install libeigen3-doc libeigen3-dev libflann-dev  
 sudo apt-get install libqhull-dev libqhull-doc  
+sudo apt-get install qt4-dev-tools
 sudo apt-get install libvtk6 libvtk6-dev  
   
 **Install GIT & CMake**  
