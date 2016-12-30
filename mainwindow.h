@@ -2,15 +2,11 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
-#include <QVector>
 #include <QFileDialog>
-#include <QFileDialog>
+#include <QLayout>
+#include <QAction>
 #include <QKeyEvent>
-
-#include "controlbar.h"
-#include "Libs/pointcloud.h"
-#include "Libs/pointcloudvisualizer.h"
-#include "Libs/cropbox.h"
+#include <QVTKWidget.h>
 
 namespace Ui {
 class MainWindow;
@@ -24,14 +20,27 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
 
-private slots:
+    void setVisualizerWidget(QVTKWidget *widget);
+    void showMessageOnStatusBar(QString &message, int timeout);
+    void setActionSaveCloudEnabled(bool decision);
+
+signals:
+    void loadCloud(QString);
+    void saveCloud(QString);
+    void unloadCloud();
+    void unloadAllClouds();
+    void useNextActiveCloud();
+    void usePreviousActiveCloud();
+
+    void showControlBar();
+
+    void translateCropBox(double, double, double);
+    void cropCloud();
 
 protected:
     bool eventFilter(QObject *object, QEvent *event);
 
 private slots:
-
-    void resetCamera();
 
     void on_action_loadCloud_triggered();
     void on_action_saveCloud_triggered();
@@ -41,26 +50,7 @@ private slots:
     void on_action_showControlBar_triggered();
 
 private:
-    void setupVisualizer();
-    void setupCloud(QString &filePath);
-    void addCloud(PointCloud* cloud);
-    void delCloud();
-    void delClouds();
-    void changeActiveCloud();
-    void setupCropBox();
-    void enableCropBox();
-    void disableCropBox();
-    void extractCloud();
-
-private:
     Ui::MainWindow *ui;
-    ControlBar* controlBar_;
-    PointCloud* currentCloud_ = NULL;
-    QVector<PointCloud*> clouds_;
-    PointCloudVisualizer *visualizer_ = NULL;
-    CropBox *cropBox_ = NULL;
-    bool cropBoxEnabled_;
-
 };
 
 #endif // MAINWINDOW_H

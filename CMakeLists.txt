@@ -13,6 +13,7 @@ LINK_DIRECTORIES    (${PCL_LIBRARY_DIRS})
 ADD_DEFINITIONS     (${PCL_DEFINITIONS})
 
 SET (PROJECT_SOURCES  main.cpp                # Add cpp Files
+                      pclproject.cpp
                       mainwindow.cpp
                       controlbar.cpp
                       Libs/pointcloud.cpp
@@ -20,6 +21,7 @@ SET (PROJECT_SOURCES  main.cpp                # Add cpp Files
                       Libs/cropbox.cpp
                       )
 SET (PROJECT_HEADERS  mainwindow.h            # Add h Files
+                      pclproject.h
                       controlbar.h
                       Libs/pointcloud.h
                       Libs/pointcloudvisualizer.h
