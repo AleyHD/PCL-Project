@@ -3,6 +3,7 @@
 
 #include <QObject>
 #include <QVector>
+#include <QVector3D>
 #include <QVector4D>
 
 // Point Cloud Library (PCL)
@@ -38,11 +39,11 @@ public:
     void translate(float x, float y, float z);
     void translateToOrigin();
     void setResolution(float resolution);
-    void setRotationDegree(Axis axis, float theta);
-    void rotateDegree(Axis axis, float theta);
+    void setRotationDegree(Axis axis, float angle);
+    void rotateDegree(Axis axis, float angle);
     void extractPlane(PointCloud *outputPlane, bool cut = true, int maxIterations = 100, double threshold = 1.0);
     QVector4D compute3DCentroid();
-    bool alignCloud(PointCloud *cloud2Align);
+    bool alignToCloud(PointCloud *cloud);
     void appendCloud(PointCloud *cloud2Add);
     void appendCloudSBS(PointCloud *cloud2AddSBS);
 
@@ -50,6 +51,8 @@ public:
     pcl::PointCloud<PointT>::Ptr pclCloud() { return cloud_; }
     void setPclCloud(pcl::PointCloud<PointT>::Ptr cloud);
     QString name() { return name_; }
+    QVector3D currentTranslation() { return currentTranslation_; }
+    QVector3D currentRotation() { return currentRotation_; }
 
 
 signals:
@@ -63,8 +66,8 @@ private:
 
 private:
     pcl::PointCloud<PointT>::Ptr cloud_;
-    QVector<float> currentTranslation_;
-    QVector<float> currentRotation_;
+    QVector3D currentTranslation_;
+    QVector3D currentRotation_;
     QString name_;
 };
 

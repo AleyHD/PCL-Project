@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>341</width>
+    <width>363</width>
     <height>449</height>
    </rect>
   </property>
@@ -57,7 +57,7 @@
           <double>10000.000000000000000</double>
          </property>
          <property name="value">
-          <double>100.000000000000000</double>
+          <double>20.000000000000000</double>
          </property>
         </widget>
        </item>
@@ -124,7 +124,14 @@
         </widget>
        </item>
        <item>
-        <widget class="QDoubleSpinBox" name="doubleSpinBox_cloudTranslationX"/>
+        <widget class="QDoubleSpinBox" name="doubleSpinBox_cloudTranslationX">
+         <property name="minimum">
+          <double>-100.000000000000000</double>
+         </property>
+         <property name="maximum">
+          <double>100.000000000000000</double>
+         </property>
+        </widget>
        </item>
        <item>
         <widget class="QLabel" name="label_cloudRotationX">
@@ -134,7 +141,14 @@
         </widget>
        </item>
        <item>
-        <widget class="QDoubleSpinBox" name="doubleSpinBox_cloudRotationX"/>
+        <widget class="QDoubleSpinBox" name="doubleSpinBox_cloudRotationX">
+         <property name="minimum">
+          <double>-180.000000000000000</double>
+         </property>
+         <property name="maximum">
+          <double>180.000000000000000</double>
+         </property>
+        </widget>
        </item>
       </layout>
      </item>
@@ -148,7 +162,14 @@
         </widget>
        </item>
        <item>
-        <widget class="QDoubleSpinBox" name="doubleSpinBox_cloudTranslationY"/>
+        <widget class="QDoubleSpinBox" name="doubleSpinBox_cloudTranslationY">
+         <property name="minimum">
+          <double>-100.000000000000000</double>
+         </property>
+         <property name="maximum">
+          <double>100.000000000000000</double>
+         </property>
+        </widget>
        </item>
        <item>
         <widget class="QLabel" name="label_cloudRotationY">
@@ -158,7 +179,14 @@
         </widget>
        </item>
        <item>
-        <widget class="QDoubleSpinBox" name="doubleSpinBox_cloudRotationY"/>
+        <widget class="QDoubleSpinBox" name="doubleSpinBox_cloudRotationY">
+         <property name="minimum">
+          <double>-180.000000000000000</double>
+         </property>
+         <property name="maximum">
+          <double>180.000000000000000</double>
+         </property>
+        </widget>
        </item>
       </layout>
      </item>
@@ -172,7 +200,14 @@
         </widget>
        </item>
        <item>
-        <widget class="QDoubleSpinBox" name="doubleSpinBox_cloudTranslationZ"/>
+        <widget class="QDoubleSpinBox" name="doubleSpinBox_cloudTranslationZ">
+         <property name="minimum">
+          <double>-100.000000000000000</double>
+         </property>
+         <property name="maximum">
+          <double>100.000000000000000</double>
+         </property>
+        </widget>
        </item>
        <item>
         <widget class="QLabel" name="label_doubleSpinBox_cloudRotationZ">
@@ -182,7 +217,14 @@
         </widget>
        </item>
        <item>
-        <widget class="QDoubleSpinBox" name="doubleSpinBox_cloudRotationZ"/>
+        <widget class="QDoubleSpinBox" name="doubleSpinBox_cloudRotationZ">
+         <property name="minimum">
+          <double>-180.000000000000000</double>
+         </property>
+         <property name="maximum">
+          <double>180.000000000000000</double>
+         </property>
+        </widget>
        </item>
       </layout>
      </item>
@@ -205,12 +247,12 @@
        <item>
         <layout class="QHBoxLayout" name="horizontalLayout_cloudDestinationAction">
          <item>
-          <widget class="QPushButton" name="pushButton_cloudMerge">
+          <widget class="QPushButton" name="pushButton_cloudAlign">
            <property name="enabled">
             <bool>true</bool>
            </property>
            <property name="text">
-            <string>Merge into Destination</string>
+            <string>Align to Destination</string>
            </property>
           </widget>
          </item>
@@ -282,22 +324,26 @@
      <item>
       <layout class="QHBoxLayout" name="horizontalLayout_cropBoxSize">
        <item>
-        <widget class="QDoubleSpinBox" name="doubleSpinBox_cropBoxSizeX"/>
-       </item>
-       <item>
         <widget class="QLabel" name="label_cropBoxSizeX">
          <property name="text">
-          <string>Size X</string>
+          <string>Min Point:</string>
          </property>
         </widget>
        </item>
        <item>
-        <widget class="QDoubleSpinBox" name="doubleSpinBox_cropBoxSizeY"/>
+        <widget class="QDoubleSpinBox" name="doubleSpinBox_cropBoxSizeX"/>
        </item>
        <item>
         <widget class="QLabel" name="label_cropBoxSizeY">
          <property name="text">
-          <string>Size Y</string>
+          <string>Max Point:</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QDoubleSpinBox" name="doubleSpinBox_cropBoxSizeY">
+         <property name="value">
+          <double>10.000000000000000</double>
          </property>
         </widget>
        </item>

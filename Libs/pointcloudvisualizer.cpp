@@ -81,21 +81,25 @@ void PointCloudVisualizer::addCropBox(CropBox *cropBox, double red, double green
 void PointCloudVisualizer::removePointCloud(PointCloud *cloud)
 {
     visualizer_->removePointCloud(cloud->name().toStdString());
+    this->updateWidget();
 }
 
 void PointCloudVisualizer::removeAllPointClouds()
 {
     visualizer_->removeAllPointClouds();
+    this->updateWidget();
 }
 
 void PointCloudVisualizer::removeCropBox(CropBox *cropBox)
 {
     visualizer_->removeShape(cropBox->name().toStdString());
+    this->updateWidget();
 }
 
 void PointCloudVisualizer::removeAllShapes()
 {
     visualizer_->removeAllShapes();
+    this->updateWidget();
 }
 
 void PointCloudVisualizer::updateShapePose()
@@ -142,6 +146,7 @@ void PointCloudVisualizer::hideCoordinateSystem()
 {
     visualizer_->removeCoordinateSystem(coordinateSystemId_);
     coordinateSystemEnabled_ = false;
+    this->updateWidget();
 }
 
 void PointCloudVisualizer::showHeadUpDisplay()
@@ -190,11 +195,13 @@ void PointCloudVisualizer::updateHeadUpDisplay(PointCloud *cloud)
 
 void PointCloudVisualizer::hideHeadUpDisplay()
 {
-    QMapIterator<QString, QVector2D> i(texts_);
-    while (i.hasNext()) {
-        visualizer_->updateText("", i.value().x(), i.value().y(), i.key().toStdString());
+    QMap<QString, QVector2D>::iterator i;
+    for (i = texts_.begin(); i != texts_.end(); ++i) {
+        visualizer_->updateText(" ", i.value().x(), i.value().y(), i.key().toStdString());
     }
     headUpDisplayEnabled_ = false;
+
+    this->updateWidget();
 }
 
 void PointCloudVisualizer::insertText(const QString text, int posX, int posY, const QString id)

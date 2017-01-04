@@ -5,8 +5,6 @@ PointCloud::PointCloud(QString name, QObject *parent) :
     cloud_(new pcl::PointCloud<PointT>)
 {
     name_ = name;
-    currentTranslation_.fill(0, 3);     // fill with zeros
-    currentRotation_.fill(0, 3);        // fill with zeros
 }
 
 void PointCloud::loadFile(const QString &filePath)
@@ -31,36 +29,33 @@ size_t PointCloud::points()
 
 void PointCloud::setTranslation(float x, float y, float z)
 {
-    // save values
-    float abs[3] = {x, y, z};
-    float rel[3] = {x, y, z};
-    for (int i=0; i<currentTranslation_.size(); ++i) {
-        // calculate relative value
-        rel[i] -= currentTranslation_.at(i);
-        // update absolute value
-        currentTranslation_.replace(i, abs[i]);
-    }
+    QVector3D abs(x, y, z);
+    QVector3D rel(x, y, z);
+
+    // calculate relative value
+    rel -= currentTranslation_;
+
+    // update absolute value
+    currentTranslation_ = abs;
+
     // manipulate cloud
-    this->translatePclCloud(rel[0], rel[1], rel[2]);
+    this->translatePclCloud(rel.x(), rel.y(), rel.z());
 }
 
 void PointCloud::translate(float x, float y, float z)
 {
-    float rel[3] = {x, y, z};
+    QVector3D rel(x, y, z);
+
     // update abs transform
-    for (int i=0; i<currentTranslation_.size(); ++i) {
-        currentTranslation_.replace(i, currentTranslation_.at(i)+rel[i]);
-    }
-    this->translatePclCloud(rel[0], rel[1], rel[2]);
+    currentTranslation_ += rel;
+
+    this->translatePclCloud(rel.x(), rel.y(), rel.z());
 }
 
 void PointCloud::translateToOrigin()
 {
     QVector4D centroid = this->compute3DCentroid();
     this->translate(-centroid.x(), -centroid.y(), -centroid.z());
-
-    // set origin as zero transform
-    currentTranslation_.fill(0, 3);    // fill with zeros
 
     // publish changes
     emit updated();
@@ -79,26 +74,46 @@ void PointCloud::setResolution(float resolution)
     emit updated();
 }
 
-void PointCloud::setRotationDegree(PointCloud::Axis axis, float theta)
+void PointCloud::setRotationDegree(Axis axis, float angle)
 {
-    // calculate relative value
-    float rel = theta;
-    rel -= currentRotation_.at(axis);
+    float rel = angle;
 
-    // update absolute value
-    currentTranslation_.replace(axis, theta);
+    switch (axis) {
+        case AxisX:
+            rel -= currentRotation_.x();
+            currentRotation_.setX(angle);
+            break;
+        case AxisY:
+            rel -= currentRotation_.y();
+            currentRotation_.setY(angle);
+            break;
+        case AxisZ:
+            rel -= currentRotation_.z();
+            currentRotation_.setZ(angle);
+            break;
+    }
 
     // manipulate cloud
     this->rotatePclCloud(axis, rel);
 }
 
-void PointCloud::rotateDegree(Axis axis, float theta)
+void PointCloud::rotateDegree(Axis axis, float angle)
 {
     // update abs rotation
-    currentRotation_.replace(axis, currentRotation_.at(axis)+theta);
+    switch (axis) {
+        case AxisX:
+            currentRotation_.setX(currentRotation_.x() + angle);
+            break;
+        case AxisY:
+            currentRotation_.setY(currentRotation_.y() + angle);
+            break;
+        case AxisZ:
+            currentRotation_.setZ(currentRotation_.y() + angle);
+            break;
+    }
 
     // manipulate cloud
-    this->rotatePclCloud(axis, theta);
+    this->rotatePclCloud(axis, angle);
 }
 
 void PointCloud::extractPlane(PointCloud *outputPlane, bool cut, int maxIterations, double threshold)
@@ -160,19 +175,30 @@ QVector4D PointCloud::compute3DCentroid()
     return qCentroid;
 }
 
-bool PointCloud::alignCloud(PointCloud* cloud2Align)
+bool PointCloud::alignToCloud(PointCloud* cloud)
 {
     // set parameters
-    pcl::IterativeClosestPoint<pcl::PointXYZRGB, pcl::PointXYZRGB> icp;
-    icp.setInputSource(cloud2Align->pclCloud());
-    icp.setInputTarget(cloud_);
+    pcl::IterativeClosestPoint<PointT, PointT> icp;
+    icp.setInputSource(cloud_);
+    icp.setInputTarget(cloud->pclCloud());
 
-    // align clouds
-    //icp.align(*cloud_);
+    // align cloud
+    icp.align(*cloud_);
 
-    // status
-    double score = icp.getFitnessScore();
-    //Eigen::Matrix4f m = icp.getFinalTransformation();
+    // get transformation
+    Eigen::Matrix4f transform4f =  icp.getFinalTransformation();
+    Eigen::Affine3f transform(transform4f);
+    float x, y, z, angleX, angleY, angleZ;
+    pcl::getTranslationAndEulerAngles(transform, x, y, z, angleX, angleY, angleZ);
+
+    // save transformation
+
+    QVector3D translation(x, y, z);
+    QVector3D rotation(angleX, angleY, angleZ);
+
+    currentTranslation_ += translation;
+    currentRotation_ += rotation;
+
     return icp.hasConverged();
 }
 

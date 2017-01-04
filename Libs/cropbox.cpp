@@ -86,7 +86,7 @@ void CropBox::setRotationDegree(CropBox::Axis axis, float theta)
     rel -= currentRotation_.at(axis);
 
     // update absolute value
-    currentTranslation_.replace(axis, theta);
+    currentRotation_.replace(axis, theta);
 
     // manipulate cropbox
     this->rotatePclCropBox(axis, rel);

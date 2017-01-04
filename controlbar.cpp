@@ -15,10 +15,24 @@ ControlBar::~ControlBar()
     delete ui;
 }
 
-void ControlBar::setDestinationClouds(QStringList clouds)
+void ControlBar::updateDestinationClouds(QStringList clouds)
 {
-    if (clouds.empty()) return;
-    ui->comboBox_cloudDestination->addItems(clouds);
+    ui->comboBox_cloudDestination->clear();
+    if (!clouds.isEmpty()) ui->comboBox_cloudDestination->addItems(clouds);
+}
+
+void ControlBar::updateCloudTranslation(double x, double y, double z)
+{
+    ui->doubleSpinBox_cloudTranslationX->setValue(x);
+    ui->doubleSpinBox_cloudTranslationY->setValue(y);
+    ui->doubleSpinBox_cloudTranslationZ->setValue(z);
+}
+
+void ControlBar::updateCloudRotation(double angleX, double angleY, double angleZ)
+{
+    ui->doubleSpinBox_cloudRotationX->setValue(angleX);
+    ui->doubleSpinBox_cloudRotationY->setValue(angleY);
+    ui->doubleSpinBox_cloudRotationZ->setValue(angleZ);
 }
 
 void ControlBar::on_checkBox_enableCos_clicked(bool checked)
@@ -62,20 +76,46 @@ void ControlBar::on_doubleSpinBox_cloudTranslationZ_valueChanged(double arg1)
 
 void ControlBar::on_doubleSpinBox_cloudRotationX_valueChanged(double arg1)
 {
-    Axis axis = AxisX;
+    PointCloud::Axis axis = PointCloud::AxisX;
     emit setCloudRotation(axis, arg1);
 }
 
 void ControlBar::on_doubleSpinBox_cloudRotationY_valueChanged(double arg1)
 {
-    Axis axis = AxisY;
+    PointCloud::Axis axis = PointCloud::AxisY;
     emit setCloudRotation(axis, arg1);
 }
 
 void ControlBar::on_doubleSpinBox_cloudRotationZ_valueChanged(double arg1)
 {
-    Axis axis = AxisZ;
+    PointCloud::Axis axis = PointCloud::AxisZ;
     emit setCloudRotation(axis, arg1);
+}
+
+void ControlBar::on_pushButton_cloudAlign_clicked()
+{
+    QString cloud = ui->comboBox_cloudDestination->currentText();
+    if (cloud.isEmpty()) return;
+    emit alignToCloud(cloud);
+}
+
+void ControlBar::on_pushButton_cloudAppend_clicked()
+{
+    QString cloud = ui->comboBox_cloudDestination->currentText();
+    if (cloud.isEmpty()) return;
+    emit appendToCloud(cloud);
+}
+
+void ControlBar::on_checkBox_cropBoxEnableCropBox_clicked(bool checked)
+{
+    if (checked) emit enableCropBox();
+    else emit disableCropBox();
+}
+
+void ControlBar::on_checkBox_cropBoxHighlight_clicked(bool checked)
+{
+    if (checked) emit enableCropBoxHighlight();
+    else emit disableCropBoxHighlight();
 }
 
 void ControlBar::on_doubleSpinBox_cropBoxSizeX_valueChanged(double arg1)
@@ -92,18 +132,4 @@ void ControlBar::on_doubleSpinBox_cropBoxSizeY_valueChanged(double arg1)
     x = ui->doubleSpinBox_cropBoxSizeX->value();
     y = arg1;
     emit setCropBoxSize(x, y);
-}
-
-void ControlBar::on_pushButton_cloudMerge_clicked()
-{
-    QString cloud = ui->comboBox_cloudDestination->currentText();
-    if (cloud.isEmpty()) return;
-    emit mergeIntoCloud(cloud);
-}
-
-void ControlBar::on_pushButton_cloudAppend_clicked()
-{
-    QString cloud = ui->comboBox_cloudDestination->currentText();
-    if (cloud.isEmpty()) return;
-    emit appendToCloud(cloud);
 }

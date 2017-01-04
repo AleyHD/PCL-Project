@@ -2,6 +2,8 @@
 #define PCLPROJECT_H
 
 #include <QObject>
+#include <QVector>
+#include <QStringList>
 
 #include "mainwindow.h"
 #include "controlbar.h"
@@ -33,8 +35,23 @@ public slots:
     void cropCloud();
 
     // controlbar
+    void showCos(double scale);
+    void hideCos();
+    void showHud();
+    void hideHud();
+    void resetCamera();
+
+    void setCloudTranslation(double x, double y, double z);
+    void setCloudRotation(PointCloud::Axis axis, double angle);
+    void alignToCloud(QString cloudName);
+    void appendToCloud(QString cloudName);
+
     void enableCropBox();
     void disableCropBox();
+    void enableCropBoxHighlight();
+    void disableCropBoxHighlight();
+    void setCropBoxSize(double minPoint, double maxPoint);
+    void setCropBoxMovementFactor(double factor);
 
 private:
     void setupMainWindow();
@@ -44,6 +61,8 @@ private:
 
     void addCloud(PointCloud* cloud);
     void publishActiveCloud();
+    void setCurrentCloud(PointCloud* cloud);
+    void setDestinationClouds();
 
 private:
     MainWindow* mainWindow_;
