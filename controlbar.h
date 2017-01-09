@@ -22,6 +22,9 @@ public:
     ~ControlBar();
 
     void updateDestinationClouds(QStringList clouds);
+    void insertAvailableCloud(QString cloud);
+    void removeAvailableCloud(int index);
+    void removeAvailableClouds();
     void updateCloudTranslation(double x, double y, double z);
     void updateCloudRotation(double angleX, double angleY, double angleZ);
 
@@ -35,8 +38,9 @@ signals:
     void resetCamera();
 
     // cloud
-    void setCloudTranslation(double, double, double);
-    void setCloudRotation(PointCloud::Axis, double);
+    void setActiveCloud(int);
+    void removeCloudOutliers(int, double);
+    void setCloudPose(double, double, double, double, double, double);
     void alignToCloud(QString);
     void appendToCloud(QString);
 
@@ -57,21 +61,19 @@ private slots:
     void on_pushButton_visualizerResetCamera_clicked() { emit resetCamera(); }
 
     // cloud
-    void on_doubleSpinBox_cloudTranslationX_valueChanged(double arg1);
-    void on_doubleSpinBox_cloudTranslationY_valueChanged(double arg1);
-    void on_doubleSpinBox_cloudTranslationZ_valueChanged(double arg1);
-    void on_doubleSpinBox_cloudRotationX_valueChanged(double arg1);
-    void on_doubleSpinBox_cloudRotationY_valueChanged(double arg1);
-    void on_doubleSpinBox_cloudRotationZ_valueChanged(double arg1);
+    void on_pushButton_cloudMoveCloud_clicked();
+    void on_comboBox_cloudSetActiveCloud_currentIndexChanged(int index) { emit setActiveCloud(index); }
     void on_pushButton_cloudAlign_clicked();
     void on_pushButton_cloudAppend_clicked();
 
     // cropbox
     void on_checkBox_cropBoxEnableCropBox_clicked(bool checked);
-    void on_checkBox_cropBoxHighlight_clicked(bool checked);
     void on_doubleSpinBox_cropBoxSizeX_valueChanged(double arg1);
     void on_doubleSpinBox_cropBoxSizeY_valueChanged(double arg1);
     void on_doubleSpinBox_cropBoxMovementFactor_valueChanged(double arg1) { emit setCropBoxMovementFactor(arg1); }
+
+
+    void on_pushButton_cloudRemoveOutliers_clicked();
 
 private:
     Ui::ControlBar *ui;

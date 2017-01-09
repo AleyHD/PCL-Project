@@ -55,7 +55,7 @@ void PointCloudVisualizer::addPointCloud(PointCloud *cloud, int red, int green, 
     this->updateWidget();
 }
 
-void PointCloudVisualizer::addCropBox(CropBox *cropBox, double red, double green, double blue)
+void PointCloudVisualizer::addCropBox(CropBox* cropBox, double red, double green, double blue)
 {
     // get parameters
     QVector3D pMin = cropBox->pMin();
@@ -64,6 +64,7 @@ void PointCloudVisualizer::addCropBox(CropBox *cropBox, double red, double green
 
     // setup box
     visualizer_->addCube(pMin.x(),pMax.x(),pMin.y(),pMax.y(),pMin.z(),pMax.z(), red, green, blue, name);
+    this->updateCropBoxPose(cropBox);
 
     // set to wireframe
     visualizer_->setShapeRenderingProperties(pcl::visualization::PCL_VISUALIZER_REPRESENTATION,
@@ -71,7 +72,7 @@ void PointCloudVisualizer::addCropBox(CropBox *cropBox, double red, double green
                                              name);
 
     // connect signals to slots
-    connect(cropBox, SIGNAL(transformApplied()), this, SLOT(updateShapePose()));
+    connect(cropBox, SIGNAL(transformApplied(CropBox*)), this, SLOT(updateCropBoxPose(CropBox*)));
     connect(cropBox, SIGNAL(cloudCropped(PointCloud*)), this, SLOT(updateCloud(PointCloud*)));
 
     // update
@@ -102,11 +103,9 @@ void PointCloudVisualizer::removeAllShapes()
     this->updateWidget();
 }
 
-void PointCloudVisualizer::updateShapePose()
+void PointCloudVisualizer::updateCropBoxPose(CropBox* cropBox)
 {
-    // identify sender
-    CropBox* shape = (CropBox*)sender();
-    visualizer_->updateShapePose(shape->name().toStdString(), shape->transformMatrix());
+    visualizer_->updateShapePose(cropBox->name().toStdString(), cropBox->transformMatrix());
 
     // update
     this->updateWidget();
@@ -232,6 +231,7 @@ void PointCloudVisualizer::updateCloud()
     std::string id = cloud->name().toStdString();
 
     // execute update
+    this->updateHeadUpDisplay(cloud);
     visualizer_->updatePointCloud(pclCloud, id);
     visualizerWidget_->update();
 }
@@ -243,6 +243,7 @@ void PointCloudVisualizer::updateCloud(PointCloud* cloud)
     std::string id = cloud->name().toStdString();
 
     // execute update
+    this->updateHeadUpDisplay(cloud);
     visualizer_->updatePointCloud(pclCloud, id);
     visualizerWidget_->update();
 }

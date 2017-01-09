@@ -23,6 +23,7 @@ public:
     void setVisualizerWidget(QVTKWidget *widget);
     void showMessageOnStatusBar(QString &message, int timeout);
     void setActionSaveCloudEnabled(bool decision);
+    void setCropBoxMovementFactor(double factor) { cropBoxMovementFactor_ = factor; }
 
 signals:
     void loadCloud(QString);
@@ -51,6 +52,7 @@ private slots:
 
 private:
     Ui::MainWindow *ui;
+    double cropBoxMovementFactor_;
 };
 
 #endif // MAINWINDOW_H

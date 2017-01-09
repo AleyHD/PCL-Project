@@ -116,6 +116,24 @@ void PointCloud::rotateDegree(Axis axis, float angle)
     this->rotatePclCloud(axis, angle);
 }
 
+void PointCloud::setPose(float posX, float posY, float posZ, float rotX, float rotY, float rotZ)
+{
+    QVector3D posAbs(posX, posY, posZ);
+    QVector3D posRel(posX, posY, posZ);
+    QVector3D rotAbs(rotX, rotY, rotZ);
+    QVector3D rotRel(rotX, rotY, rotZ);
+
+    // calculate relative value
+    posRel -= currentTranslation_;
+    rotRel -= currentRotation_;
+
+    // update absolute value
+    currentTranslation_ = posAbs;
+    currentRotation_ = rotAbs;
+
+    this->transformPclCloud(posRel.x(), posRel.y(), posRel.z(), rotRel.x(), rotRel.y(), rotRel.z());
+}
+
 void PointCloud::extractPlane(PointCloud *outputPlane, bool cut, int maxIterations, double threshold)
 {
     // Segment the largest planar component
@@ -167,6 +185,19 @@ void PointCloud::extractPlane(PointCloud *outputPlane, bool cut, int maxIteratio
     emit updated();
 }
 
+void PointCloud::removeStatisticalOutliers(int neighbors, double deviationThreshold)
+{
+    // Create the filtering object
+    pcl::StatisticalOutlierRemoval<PointT> sor;
+    sor.setInputCloud(cloud_);
+    sor.setMeanK(neighbors);
+    sor.setStddevMulThresh(deviationThreshold);
+    sor.filter(*cloud_);
+
+    // publish changes
+    emit updated();
+}
+
 QVector4D PointCloud::compute3DCentroid()
 {
     Eigen::Vector4f centroid;
@@ -198,6 +229,9 @@ bool PointCloud::alignToCloud(PointCloud* cloud)
 
     currentTranslation_ += translation;
     currentRotation_ += rotation;
+
+    // publish changes
+    emit updated();
 
     return icp.hasConverged();
 }
@@ -261,6 +295,26 @@ void PointCloud::rotatePclCloud(PointCloud::Axis axis, float theta)
     }
     // Executing the transformation
     pcl::transformPointCloud (*cloud_, *cloud_, transform);
+
+    // publish changes
+    emit updated();
+}
+
+void PointCloud::transformPclCloud(float posX, float posY, float posZ, float rotX, float rotY, float rotZ)
+{
+    // setup Identity Matrix
+    Eigen::Affine3f transform = Eigen::Affine3f::Identity();
+
+    // define translation
+    transform.translation() << posX, posY, posZ;
+
+    // define rotation
+    transform.rotate(Eigen::AngleAxisf(rotX, Eigen::Vector3f::UnitX()));
+    transform.rotate(Eigen::AngleAxisf(rotY, Eigen::Vector3f::UnitY()));
+    transform.rotate(Eigen::AngleAxisf(rotZ, Eigen::Vector3f::UnitZ()));
+
+    // apply the transformation
+    pcl::transformPointCloud(*cloud_, *cloud_, transform);
 
     // publish changes
     emit updated();

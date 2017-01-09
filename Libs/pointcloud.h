@@ -20,6 +20,7 @@
 #include <pcl/filters/extract_indices.h>
 #include <pcl/filters/crop_box.h>
 #include <pcl/registration/icp.h>
+#include <pcl/filters/statistical_outlier_removal.h>
 
 typedef pcl::PointXYZRGB PointT;
 //typedef pcl::PointXYZ PointT;
@@ -41,7 +42,9 @@ public:
     void setResolution(float resolution);
     void setRotationDegree(Axis axis, float angle);
     void rotateDegree(Axis axis, float angle);
+    void setPose(float posX, float posY, float posZ, float rotX, float rotY, float rotZ);
     void extractPlane(PointCloud *outputPlane, bool cut = true, int maxIterations = 100, double threshold = 1.0);
+    void removeStatisticalOutliers(int neighbors = 50, double deviationThreshold = 1.0);
     QVector4D compute3DCentroid();
     bool alignToCloud(PointCloud *cloud);
     void appendCloud(PointCloud *cloud2Add);
@@ -63,6 +66,7 @@ public slots:
 private:
     void translatePclCloud(float x, float y, float z);
     void rotatePclCloud(Axis axis, float theta);
+    void transformPclCloud(float posX, float posY, float posZ, float rotX, float rotY, float rotZ);
 
 private:
     pcl::PointCloud<PointT>::Ptr cloud_;

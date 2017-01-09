@@ -26,7 +26,7 @@ public:
     void setTranslation(float x, float y, float z);
     void rotateDegree(Axis axis, float theta);
     void setRotationDegree(Axis axis, float theta);
-    void changeSize(QVector3D pMin, QVector3D pMax);
+    void setSize(QVector3D pMin, QVector3D pMax);
     void cropCloud();
 
     void setActiveCloud(PointCloud *cloud);
@@ -39,8 +39,8 @@ public:
     PointCloud* involvedPoints() { return involvedPoints_; }
 
 signals:
-    void transformApplied();
-    void cloudCropped(PointCloud* cloud);
+    void transformApplied(CropBox*);
+    void cloudCropped(PointCloud*);
     void sizeChanged();
 
 public slots:

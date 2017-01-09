@@ -21,6 +21,22 @@ void ControlBar::updateDestinationClouds(QStringList clouds)
     if (!clouds.isEmpty()) ui->comboBox_cloudDestination->addItems(clouds);
 }
 
+void ControlBar::insertAvailableCloud(QString cloud)
+{
+    ui->comboBox_cloudSetActiveCloud->addItem(cloud);
+    ui->comboBox_cloudSetActiveCloud->setCurrentIndex(ui->comboBox_cloudSetActiveCloud->count()-1);
+}
+
+void ControlBar::removeAvailableCloud(int index)
+{
+    ui->comboBox_cloudSetActiveCloud->removeItem(index);
+}
+
+void ControlBar::removeAvailableClouds()
+{
+    ui->comboBox_cloudSetActiveCloud->clear();
+}
+
 void ControlBar::updateCloudTranslation(double x, double y, double z)
 {
     ui->doubleSpinBox_cloudTranslationX->setValue(x);
@@ -47,51 +63,6 @@ void ControlBar::on_checkBox_visualizerShowHeadUpDisplay_clicked(bool checked)
     else emit hideHud();
 }
 
-void ControlBar::on_doubleSpinBox_cloudTranslationX_valueChanged(double arg1)
-{
-    double x, y, z;
-    x = arg1;
-    y = ui->doubleSpinBox_cloudTranslationY->value();
-    z = ui->doubleSpinBox_cloudTranslationZ->value();
-    emit setCloudTranslation(x, y, z);
-}
-
-void ControlBar::on_doubleSpinBox_cloudTranslationY_valueChanged(double arg1)
-{
-    double x, y, z;
-    x = ui->doubleSpinBox_cloudTranslationX->value();
-    y = arg1;
-    z = ui->doubleSpinBox_cloudTranslationZ->value();
-    emit setCloudTranslation(x, y, z);
-}
-
-void ControlBar::on_doubleSpinBox_cloudTranslationZ_valueChanged(double arg1)
-{
-    double x, y, z;
-    x = ui->doubleSpinBox_cloudTranslationX->value();
-    y = ui->doubleSpinBox_cloudTranslationY->value();
-    z = arg1;
-    emit setCloudTranslation(x, y, z);
-}
-
-void ControlBar::on_doubleSpinBox_cloudRotationX_valueChanged(double arg1)
-{
-    PointCloud::Axis axis = PointCloud::AxisX;
-    emit setCloudRotation(axis, arg1);
-}
-
-void ControlBar::on_doubleSpinBox_cloudRotationY_valueChanged(double arg1)
-{
-    PointCloud::Axis axis = PointCloud::AxisY;
-    emit setCloudRotation(axis, arg1);
-}
-
-void ControlBar::on_doubleSpinBox_cloudRotationZ_valueChanged(double arg1)
-{
-    PointCloud::Axis axis = PointCloud::AxisZ;
-    emit setCloudRotation(axis, arg1);
-}
-
 void ControlBar::on_pushButton_cloudAlign_clicked()
 {
     QString cloud = ui->comboBox_cloudDestination->currentText();
@@ -112,24 +83,43 @@ void ControlBar::on_checkBox_cropBoxEnableCropBox_clicked(bool checked)
     else emit disableCropBox();
 }
 
-void ControlBar::on_checkBox_cropBoxHighlight_clicked(bool checked)
-{
-    if (checked) emit enableCropBoxHighlight();
-    else emit disableCropBoxHighlight();
-}
-
 void ControlBar::on_doubleSpinBox_cropBoxSizeX_valueChanged(double arg1)
 {
-    double x, y;
-    x = arg1;
-    y = ui->doubleSpinBox_cropBoxSizeY->value();
-    emit setCropBoxSize(x, y);
+    double min, max;
+    min = arg1;
+    max = ui->doubleSpinBox_cropBoxSizeY->value();
+    if (min >= max) return;
+    emit setCropBoxSize(min, max);
 }
 
 void ControlBar::on_doubleSpinBox_cropBoxSizeY_valueChanged(double arg1)
 {
-    double x, y;
-    x = ui->doubleSpinBox_cropBoxSizeX->value();
-    y = arg1;
-    emit setCropBoxSize(x, y);
+    double min, max;
+    min = ui->doubleSpinBox_cropBoxSizeX->value();
+    max = arg1;
+    if (min >= max) return;
+    emit setCropBoxSize(min, max);
+}
+
+void ControlBar::on_pushButton_cloudMoveCloud_clicked()
+{
+    double posX, posY, posZ, rotX, rotY, rotZ;
+
+    posX = ui->doubleSpinBox_cloudTranslationX->value();
+    posY = ui->doubleSpinBox_cloudTranslationY->value();
+    posZ = ui->doubleSpinBox_cloudTranslationZ->value();
+
+    rotX = ui->doubleSpinBox_cloudRotationX->value();
+    rotY = ui->doubleSpinBox_cloudRotationY->value();
+    rotZ = ui->doubleSpinBox_cloudRotationZ->value();
+
+    emit setCloudPose(posX, posY, posZ, rotX, rotY, rotZ);
+}
+
+void ControlBar::on_pushButton_cloudRemoveOutliers_clicked()
+{
+    int neighbors = ui->spinBox_cloudRemoveOutliersNeighbors->value();
+    double deviation = ui->doubleSpinBox_cloudRemoveOutliersDeviation->value();
+
+    emit removeCloudOutliers(neighbors, deviation);
 }

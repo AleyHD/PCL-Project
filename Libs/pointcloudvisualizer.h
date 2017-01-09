@@ -50,8 +50,8 @@ public slots:
     void updateWidget();
 
 private slots:
-    void updateShapePose();
     void insertText(const QString text, int posX, int posY, const QString id ="");
+    void updateCropBoxPose(CropBox* cropBox);
 
 private:
     boost::shared_ptr<pcl::visualization::PCLVisualizer> visualizer_;

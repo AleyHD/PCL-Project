@@ -17,6 +17,7 @@ CropBox::CropBox(QVector3D pMin, QVector3D pMax, QString name, QObject *parent) 
 
     currentTranslation_.fill(0, 3);     // fill with zeros
     currentRotation_.fill(0, 3);        // fill with zeros
+    transform_ = cropBox_.getTransform().inverse();
 
     trackInvolvedPoints_ = false;
 }
@@ -39,6 +40,7 @@ CropBox::CropBox(QObject *parent) : QObject(parent)
 
     currentTranslation_.fill(0, 3);     // fill with zeros
     currentRotation_.fill(0, 3);        // fill with zeros
+    transform_ = cropBox_.getTransform().inverse();
 
     trackInvolvedPoints_ = false;
 }
@@ -92,7 +94,7 @@ void CropBox::setRotationDegree(CropBox::Axis axis, float theta)
     this->rotatePclCropBox(axis, rel);
 }
 
-void CropBox::changeSize(QVector3D pMin, QVector3D pMax)
+void CropBox::setSize(QVector3D pMin, QVector3D pMax)
 {
     Eigen::Vector4f vMin, vMax;
 
@@ -154,7 +156,7 @@ void CropBox::translatePclCropBox(float x, float y, float z)
     if (trackInvolvedPoints_) updateInvolvedPoints();
 
     // publish changes
-    emit transformApplied();
+    emit transformApplied(this);
 }
 
 void CropBox::rotatePclCropBox(CropBox::Axis axis, float theta)
@@ -183,5 +185,5 @@ void CropBox::rotatePclCropBox(CropBox::Axis axis, float theta)
     if (trackInvolvedPoints_) updateInvolvedPoints();
 
     // publish changes
-    emit transformApplied();
+    emit transformApplied(this);
 }

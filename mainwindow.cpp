@@ -10,6 +10,9 @@ MainWindow::MainWindow(QWidget *parent) :
 
     // setup event filter for key presses
     qApp->installEventFilter(this);
+
+    // set initiale values
+    cropBoxMovementFactor_ = 1.0;
 }
 
 MainWindow::~MainWindow()
@@ -83,18 +86,20 @@ bool MainWindow::eventFilter(QObject *object, QEvent *event)
         QKeyEvent *keyEvent = static_cast<QKeyEvent *>(event);
 
         // cropBox Movement
-        if(keyEvent->key() == Qt::Key_4) emit translateCropBox(1.0, 0.0, 0.0);
-        if(keyEvent->key() == Qt::Key_6) emit translateCropBox(-1.0, 0.0, 0.0);
-        if(keyEvent->key() == Qt::Key_8) emit translateCropBox(0.0, -1.0, 0.0);
-        if(keyEvent->key() == Qt::Key_2) emit translateCropBox(0.0, 1.0, 0.0);
-        if(keyEvent->key() == Qt::Key_9) emit translateCropBox(0.0, 0.0, 1.0);
-        if(keyEvent->key() == Qt::Key_7) emit translateCropBox(0.0, 0.0, -1.0);
+        double value = 1.0*cropBoxMovementFactor_;
+        if(keyEvent->key() == Qt::Key_4) emit translateCropBox(value, 0.0, 0.0);
+        if(keyEvent->key() == Qt::Key_6) emit translateCropBox(-value, 0.0, 0.0);
+        if(keyEvent->key() == Qt::Key_8) emit translateCropBox(0.0, -value, 0.0);
+        if(keyEvent->key() == Qt::Key_2) emit translateCropBox(0.0, value, 0.0);
+        if(keyEvent->key() == Qt::Key_9) emit translateCropBox(0.0, 0.0, value);
+        if(keyEvent->key() == Qt::Key_7) emit translateCropBox(0.0, 0.0, -value);
         // cropBox Misc
         if(keyEvent->key() == Qt::Key_Delete) emit cropCloud();
 
         // ui Misc
-        if(keyEvent->key() == Qt::Key_Up) emit useNextActiveCloud();
-        if(keyEvent->key() == Qt::Key_Down) emit usePreviousActiveCloud();
+        //if(keyEvent->key() == Qt::Key_Up) emit useNextActiveCloud();
+        //if(keyEvent->key() == Qt::Key_Down) emit usePreviousActiveCloud();
     }
+
     return QObject::eventFilter(object, event);
 }
