@@ -39,7 +39,7 @@ public:
     void setTranslation(float x, float y, float z);
     void translate(float x, float y, float z);
     void translateToOrigin();
-    void setResolution(float resolution);
+    void applyVoxelGrid(float voxelDistance);
     void setRotationDegree(Axis axis, float angle);
     void rotateDegree(Axis axis, float angle);
     void setPose(float posX, float posY, float posZ, float rotX, float rotY, float rotZ);

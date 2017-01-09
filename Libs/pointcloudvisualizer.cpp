@@ -22,6 +22,11 @@ PointCloudVisualizer::PointCloudVisualizer(QVTKWidget *visualizerWidget, QObject
     this->updateWidget();
 }
 
+bool PointCloudVisualizer::contains(QString id)
+{
+    return visualizer_->contains(id.toStdString());
+}
+
 void PointCloudVisualizer::addPointCloud(PointCloud *cloud)
 {
     // get PCL Cloud & Cloud ID
@@ -29,7 +34,8 @@ void PointCloudVisualizer::addPointCloud(PointCloud *cloud)
     std::string id = cloud->name().toStdString();
 
     // add cloud
-    if (!visualizer_->addPointCloud(pclCloud, id)) return;
+    if (visualizer_->contains(id)) return;
+    visualizer_->addPointCloud(pclCloud, id);
 
     // connect signals to slots
     connect(cloud, SIGNAL(updated()), this, SLOT(updateCloud()));
@@ -46,6 +52,7 @@ void PointCloudVisualizer::addPointCloud(PointCloud *cloud, int red, int green, 
     pcl::visualization::PointCloudColorHandlerCustom<PointT> color_handler(pclCloud, red, green, blue);
 
     // add cloud
+    if (visualizer_->contains(id)) return;
     visualizer_->addPointCloud(pclCloud, color_handler, id);
 
     // connect signals to slots
@@ -58,12 +65,12 @@ void PointCloudVisualizer::addPointCloud(PointCloud *cloud, int red, int green, 
 void PointCloudVisualizer::addCropBox(CropBox* cropBox, double red, double green, double blue)
 {
     // get parameters
-    QVector3D pMin = cropBox->pMin();
-    QVector3D pMax = cropBox->pMax();
+    QVector3D pMin(0.0, 0.0, 0.0);
+    QVector3D size = cropBox->size();
     std::string name = cropBox->name().toStdString();
 
     // setup box
-    visualizer_->addCube(pMin.x(),pMax.x(),pMin.y(),pMax.y(),pMin.z(),pMax.z(), red, green, blue, name);
+    visualizer_->addCube(pMin.x(), size.x(), pMin.y(), size.y(), pMin.z(), size.z(), red, green, blue, name);
     this->updateCropBoxPose(cropBox);
 
     // set to wireframe
@@ -79,7 +86,7 @@ void PointCloudVisualizer::addCropBox(CropBox* cropBox, double red, double green
     this->updateWidget();
 }
 
-void PointCloudVisualizer::removePointCloud(PointCloud *cloud)
+void PointCloudVisualizer::hidePointCloud(PointCloud *cloud)
 {
     visualizer_->removePointCloud(cloud->name().toStdString());
     this->updateWidget();
@@ -94,6 +101,19 @@ void PointCloudVisualizer::removeAllPointClouds()
 void PointCloudVisualizer::removeCropBox(CropBox *cropBox)
 {
     visualizer_->removeShape(cropBox->name().toStdString());
+    this->updateWidget();
+}
+
+void PointCloudVisualizer::showPointCloud(PointCloud *cloud)
+{
+    // get PCL Cloud & Cloud ID
+    pcl::PointCloud<PointT>::Ptr pclCloud = cloud->pclCloud();
+    std::string id = cloud->name().toStdString();
+
+    // add cloud
+    if (visualizer_->contains(id)) return;
+
+    visualizer_->addPointCloud(pclCloud, id);
     this->updateWidget();
 }
 

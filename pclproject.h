@@ -26,7 +26,6 @@ public slots:
     void saveCloud(QString filePath);
     void unloadCloud();
     void unloadAllClouds();
-    void setActiveCloud(int index);
     void useNextActiveCloud();
     void usePreviousActiveCloud();
 
@@ -42,6 +41,10 @@ public slots:
     void hideHud();
     void resetCamera();
 
+    void setActiveCloud(int index);
+    void applyVoxelGrid(float voxelDistance);
+    void setDestinationClouds();
+    void hideActiveCloud(bool checked);
     void setCloudPose(double posX, double posY, double posZ, double rotX, double rotY, double rotZ);
     void removeCloudOutliers(int neighbors, double deviation);
     void alignToCloud(QString cloudName);
@@ -49,7 +52,7 @@ public slots:
 
     void enableCropBox();
     void disableCropBox();
-    void setCropBoxSize(double min, double max);
+    void setCropBoxSize(double size);
     void setCropBoxMovementFactor(double factor);
 
 private:
@@ -60,8 +63,6 @@ private:
 
     void addCloud(PointCloud* cloud);
     void publishActiveCloud();
-    void setCurrentCloud(PointCloud* cloud);
-    void setDestinationClouds();
 
 private:
     MainWindow* mainWindow_;

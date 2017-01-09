@@ -4,6 +4,7 @@
 #include <QDialog>
 #include <QDoubleSpinBox>
 #include <QComboBox>
+#include <QCheckBox>
 #include <QPushButton>
 #include <QStringList>
 
@@ -22,6 +23,7 @@ public:
     ~ControlBar();
 
     void updateDestinationClouds(QStringList clouds);
+    void updateHideActiveCloud(bool checked);
     void insertAvailableCloud(QString cloud);
     void removeAvailableCloud(int index);
     void removeAvailableClouds();
@@ -39,6 +41,8 @@ signals:
 
     // cloud
     void setActiveCloud(int);
+    void hideActiveCloud(bool);
+    void applyVoxelGrid(float);
     void removeCloudOutliers(int, double);
     void setCloudPose(double, double, double, double, double, double);
     void alignToCloud(QString);
@@ -49,9 +53,8 @@ signals:
     void disableCropBox();
     void enableCropBoxHighlight();
     void disableCropBoxHighlight();
-    void setCropBoxSize(double, double);
+    void setCropBoxSize(double);
     void setCropBoxMovementFactor(double);
-
 
 private slots:
     // visualizer
@@ -61,6 +64,9 @@ private slots:
     void on_pushButton_visualizerResetCamera_clicked() { emit resetCamera(); }
 
     // cloud
+    void on_pushButton_cloudRemoveOutliers_clicked();
+    void on_pushButton_cloudVoxelGrid_clicked();
+    void on_checkBox_cloudHideCloud_clicked(bool checked) { hideActiveCloud(checked); }
     void on_pushButton_cloudMoveCloud_clicked();
     void on_comboBox_cloudSetActiveCloud_currentIndexChanged(int index) { emit setActiveCloud(index); }
     void on_pushButton_cloudAlign_clicked();
@@ -68,12 +74,8 @@ private slots:
 
     // cropbox
     void on_checkBox_cropBoxEnableCropBox_clicked(bool checked);
-    void on_doubleSpinBox_cropBoxSizeX_valueChanged(double arg1);
-    void on_doubleSpinBox_cropBoxSizeY_valueChanged(double arg1);
+    void on_doubleSpinBox_cropBoxSize_valueChanged(double arg1) { emit setCropBoxSize(arg1); }
     void on_doubleSpinBox_cropBoxMovementFactor_valueChanged(double arg1) { emit setCropBoxMovementFactor(arg1); }
-
-
-    void on_pushButton_cloudRemoveOutliers_clicked();
 
 private:
     Ui::ControlBar *ui;

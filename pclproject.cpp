@@ -54,6 +54,8 @@ void PclProject::setupControlBar()
     connect(controlBar_, SIGNAL(resetCamera()), this, SLOT(resetCamera()));
 
     connect(controlBar_, SIGNAL(setActiveCloud(int)), this, SLOT(setActiveCloud(int)));
+    connect(controlBar_, SIGNAL(hideActiveCloud(bool)), this, SLOT(hideActiveCloud(bool)));
+    connect(controlBar_, SIGNAL(applyVoxelGrid(float)), this, SLOT(applyVoxelGrid(float)));
     connect(controlBar_, SIGNAL(removeCloudOutliers(int, double)), this, SLOT(removeCloudOutliers(int, double)));
     connect(controlBar_, SIGNAL(setCloudPose(double, double, double, double, double, double)), this, SLOT(setCloudPose(double, double, double, double, double, double)));
     connect(controlBar_, SIGNAL(alignToCloud(QString)), this, SLOT(alignToCloud(QString)));
@@ -61,7 +63,7 @@ void PclProject::setupControlBar()
 
     connect(controlBar_, SIGNAL(enableCropBox()), this, SLOT(enableCropBox()));
     connect(controlBar_, SIGNAL(disableCropBox()), this, SLOT(disableCropBox()));
-    connect(controlBar_, SIGNAL(setCropBoxSize(double, double)), this, SLOT(setCropBoxSize(double, double)));
+    connect(controlBar_, SIGNAL(setCropBoxSize(double)), this, SLOT(setCropBoxSize(double)));
     connect(controlBar_, SIGNAL(setCropBoxMovementFactor(double)), this, SLOT(setCropBoxMovementFactor(double)));
 
     controlBar_->show();
@@ -129,7 +131,7 @@ void PclProject::unloadCloud()
 {
     if (!currentCloud_) return;
 
-    visualizer_->removePointCloud(currentCloud_);
+    visualizer_->hidePointCloud(currentCloud_);
 
     int cloudIndex = clouds_.indexOf(currentCloud_);
     clouds_.remove(cloudIndex);
@@ -170,8 +172,17 @@ void PclProject::setActiveCloud(int index)
 
     currentCloud_ = clouds_.at(index);
 
+    bool isHidden = (!visualizer_->contains(currentCloud_->name()));
+    controlBar_->updateHideActiveCloud(isHidden);
+
     // update
     this->publishActiveCloud();
+}
+
+void PclProject::applyVoxelGrid(float voxelDistance)
+{
+    if (!currentCloud_) return;
+    currentCloud_->applyVoxelGrid(voxelDistance);
 }
 
 void PclProject::useNextActiveCloud()
@@ -225,6 +236,13 @@ void PclProject::setDestinationClouds()
         }
     }
     controlBar_->updateDestinationClouds(cloudList);
+}
+
+void PclProject::hideActiveCloud(bool checked)
+{
+    if (!currentCloud_) return;
+    if (checked) visualizer_->hidePointCloud(currentCloud_);
+    else visualizer_->showPointCloud(currentCloud_);
 }
 
 
@@ -322,12 +340,11 @@ void PclProject::disableCropBox()
     cropBoxEnabled_ = false;
 }
 
-void PclProject::setCropBoxSize(double min, double max)
+void PclProject::setCropBoxSize(double size)
 {
-    QVector3D minPoint(min, min, min);
-    QVector3D maxPoint(max, max, max);
+    QVector3D boxSize(size, size, size);
 
-    cropBox_->setSize(minPoint, maxPoint);
+    cropBox_->setSize(boxSize);
 
     if (!cropBoxEnabled_) return;
     visualizer_->removeCropBox(cropBox_);

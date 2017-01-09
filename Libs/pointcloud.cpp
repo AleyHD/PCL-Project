@@ -61,13 +61,13 @@ void PointCloud::translateToOrigin()
     emit updated();
 }
 
-void PointCloud::setResolution(float resolution)
+void PointCloud::applyVoxelGrid(float voxelDistance)
 {
     pcl::VoxelGrid<PointT> voxelGrid;
 
     // apply downsampling
     voxelGrid.setInputCloud(cloud_);
-    voxelGrid.setLeafSize(resolution, resolution, resolution);
+    voxelGrid.setLeafSize(voxelDistance, voxelDistance, voxelDistance);
     voxelGrid.filter(*cloud_);
 
     // publish changes

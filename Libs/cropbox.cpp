@@ -1,18 +1,16 @@
 #include "cropbox.h"
 
-CropBox::CropBox(QVector3D pMin, QVector3D pMax, QString name, QObject *parent) : QObject(parent)
+CropBox::CropBox(QVector3D size, QString name, QObject *parent) : QObject(parent)
 {
     Eigen::Vector4f vMin, vMax;
 
-    vMin << pMin.x(), pMin.y(), pMin.z(), 0.0;
-    vMax << pMax.x(), pMax.y(), pMax.z(), 0.0;
+    vMin << 0.0, 0.0, 0.0, 0.0;
+    vMax << size.x(), size.y(), size.z(), 0.0;
 
     cropBox_.setMin(vMin);
     cropBox_.setMax(vMax);
 
-    pMin_ = pMin;
-    pMax_ = pMax;
-
+    size_ = size;
     name_ = name;
 
     currentTranslation_.fill(0, 3);     // fill with zeros
@@ -33,8 +31,7 @@ CropBox::CropBox(QObject *parent) : QObject(parent)
     cropBox_.setMin(vMin);
     cropBox_.setMax(vMax);
 
-    pMin_ = QVector3D(vMin(0), vMin(1), vMin(2));
-    pMax_ = QVector3D(vMax(0), vMax(1), vMax(2));
+    size_ = QVector3D(vMax(0), vMax(1), vMax(2));
 
     name_ = "cropbox";
 
@@ -94,18 +91,15 @@ void CropBox::setRotationDegree(CropBox::Axis axis, float theta)
     this->rotatePclCropBox(axis, rel);
 }
 
-void CropBox::setSize(QVector3D pMin, QVector3D pMax)
+void CropBox::setSize(QVector3D size)
 {
-    Eigen::Vector4f vMin, vMax;
+    Eigen::Vector4f vMax;
 
-    vMin << pMin.x(), pMin.y(), pMin.z(), 0.0;
-    vMax << pMax.x(), pMax.y(), pMax.z(), 0.0;
+    vMax << size.x(), size.y(), size.z(), 0.0;
 
-    cropBox_.setMin(vMin);
     cropBox_.setMax(vMax);
 
-    pMin_ = pMin;
-    pMax_ = pMax;
+    size_ = size;
 
     emit sizeChanged();
 }

@@ -27,11 +27,13 @@ class PointCloudVisualizer : public QObject
 public:
     explicit PointCloudVisualizer(QVTKWidget *visualizerWidget, QObject *parent = 0);
 
+    bool contains(QString id);
     void addPointCloud(PointCloud* cloud);
     void addPointCloud(PointCloud* cloud, int red, int green, int blue);
     void addCropBox(CropBox* cropBox, double red = 1.0, double green = 1.0, double blue = 1.0);
     void removeCropBox(CropBox* cropBox);
-    void removePointCloud(PointCloud* cloud);
+    void showPointCloud(PointCloud* cloud);
+    void hidePointCloud(PointCloud* cloud);
     void removeAllPointClouds();
     void removeAllShapes();
     void setBackgroundColor(const double red, const double green, const double blue);

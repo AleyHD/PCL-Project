@@ -20,20 +20,19 @@ public:
     enum Axis { AxisX, AxisY, AxisZ };
 
 public:
-    explicit CropBox(QVector3D pMin, QVector3D pMax, QString name, QObject *parent = 0);
+    explicit CropBox(QVector3D size, QString name, QObject *parent = 0);
     explicit CropBox(QObject *parent = 0);
     void translate(float x, float y, float z);
     void setTranslation(float x, float y, float z);
     void rotateDegree(Axis axis, float theta);
     void setRotationDegree(Axis axis, float theta);
-    void setSize(QVector3D pMin, QVector3D pMax);
+    void setSize(QVector3D size);
     void cropCloud();
 
     void setActiveCloud(PointCloud *cloud);
     void trackInvolvedPoints(bool decision) { trackInvolvedPoints_ = decision; }
 
-    QVector3D pMin() { return pMin_; }
-    QVector3D pMax() { return pMax_; }
+    QVector3D size() { return size_; }
     QString name() { return name_; }
     Eigen::Affine3f transformMatrix() { return transform_; }
     PointCloud* involvedPoints() { return involvedPoints_; }
@@ -58,8 +57,7 @@ private:
     QVector<float> currentTranslation_;
     QVector<float> currentRotation_;
     QString name_;
-    QVector3D pMin_;
-    QVector3D pMax_;
+    QVector3D size_;
     Eigen::Affine3f transform_;
 };
 

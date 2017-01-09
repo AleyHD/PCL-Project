@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>395</width>
-    <height>565</height>
+    <height>590</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -142,6 +142,13 @@
       </layout>
      </item>
      <item>
+      <widget class="QCheckBox" name="checkBox_cloudHideCloud">
+       <property name="text">
+        <string>Hide Active Cloud</string>
+       </property>
+      </widget>
+     </item>
+     <item>
       <layout class="QHBoxLayout" name="horizontalLayout_cloudRemoveOutliers">
        <item>
         <widget class="QLabel" name="label_cloudRemoveOutliersNeighbors">
@@ -178,6 +185,31 @@
         <widget class="QPushButton" name="pushButton_cloudRemoveOutliers">
          <property name="text">
           <string>Remove Outliers</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout_cloudVoxelGrid">
+       <item>
+        <widget class="QLabel" name="label_cloudVoxelGrid">
+         <property name="text">
+          <string>Voxel Leafsize:</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QDoubleSpinBox" name="doubleSpinBox_cloudVoxelGrid">
+         <property name="value">
+          <double>0.100000000000000</double>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="pushButton_cloudVoxelGrid">
+         <property name="text">
+          <string>Apply Voxel Grid</string>
          </property>
         </widget>
        </item>
@@ -401,35 +433,21 @@
       </layout>
      </item>
      <item>
-      <layout class="QHBoxLayout" name="horizontalLayout_cropBoxSize">
+      <layout class="QHBoxLayout" name="horizontalLayout_cropBoxValues">
        <item>
-        <widget class="QLabel" name="label_cropBoxSizeX">
+        <widget class="QLabel" name="label_cropBoxSize">
          <property name="text">
-          <string>Min Point:</string>
+          <string>Size:</string>
          </property>
         </widget>
        </item>
        <item>
-        <widget class="QDoubleSpinBox" name="doubleSpinBox_cropBoxSizeX"/>
-       </item>
-       <item>
-        <widget class="QLabel" name="label_cropBoxSizeY">
-         <property name="text">
-          <string>Max Point:</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QDoubleSpinBox" name="doubleSpinBox_cropBoxSizeY">
+        <widget class="QDoubleSpinBox" name="doubleSpinBox_cropBoxSize">
          <property name="value">
           <double>10.000000000000000</double>
          </property>
         </widget>
        </item>
-      </layout>
-     </item>
-     <item>
-      <layout class="QHBoxLayout" name="horizontalLayout_cropBoxMovementFactor">
        <item>
         <widget class="QLabel" name="label_cropBoxMovementFactor">
          <property name="text">
@@ -448,6 +466,9 @@
         </widget>
        </item>
       </layout>
+     </item>
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout_cropBoxMovementFactor"/>
      </item>
     </layout>
    </item>

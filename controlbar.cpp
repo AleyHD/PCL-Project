@@ -21,6 +21,11 @@ void ControlBar::updateDestinationClouds(QStringList clouds)
     if (!clouds.isEmpty()) ui->comboBox_cloudDestination->addItems(clouds);
 }
 
+void ControlBar::updateHideActiveCloud(bool checked)
+{
+    ui->checkBox_cloudHideCloud->setChecked(checked);
+}
+
 void ControlBar::insertAvailableCloud(QString cloud)
 {
     ui->comboBox_cloudSetActiveCloud->addItem(cloud);
@@ -83,24 +88,6 @@ void ControlBar::on_checkBox_cropBoxEnableCropBox_clicked(bool checked)
     else emit disableCropBox();
 }
 
-void ControlBar::on_doubleSpinBox_cropBoxSizeX_valueChanged(double arg1)
-{
-    double min, max;
-    min = arg1;
-    max = ui->doubleSpinBox_cropBoxSizeY->value();
-    if (min >= max) return;
-    emit setCropBoxSize(min, max);
-}
-
-void ControlBar::on_doubleSpinBox_cropBoxSizeY_valueChanged(double arg1)
-{
-    double min, max;
-    min = ui->doubleSpinBox_cropBoxSizeX->value();
-    max = arg1;
-    if (min >= max) return;
-    emit setCropBoxSize(min, max);
-}
-
 void ControlBar::on_pushButton_cloudMoveCloud_clicked()
 {
     double posX, posY, posZ, rotX, rotY, rotZ;
@@ -122,4 +109,10 @@ void ControlBar::on_pushButton_cloudRemoveOutliers_clicked()
     double deviation = ui->doubleSpinBox_cloudRemoveOutliersDeviation->value();
 
     emit removeCloudOutliers(neighbors, deviation);
+}
+
+void ControlBar::on_pushButton_cloudVoxelGrid_clicked()
+{
+    float leafsize = ui->doubleSpinBox_cloudVoxelGrid->value();
+    emit applyVoxelGrid(leafsize);
 }
