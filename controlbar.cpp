@@ -102,17 +102,3 @@ void ControlBar::on_pushButton_cloudMoveCloud_clicked()
 
     emit setCloudPose(posX, posY, posZ, rotX, rotY, rotZ);
 }
-
-void ControlBar::on_pushButton_cloudRemoveOutliers_clicked()
-{
-    int neighbors = ui->spinBox_cloudRemoveOutliersNeighbors->value();
-    double deviation = ui->doubleSpinBox_cloudRemoveOutliersDeviation->value();
-
-    emit removeCloudOutliers(neighbors, deviation);
-}
-
-void ControlBar::on_pushButton_cloudVoxelGrid_clicked()
-{
-    float leafsize = ui->doubleSpinBox_cloudVoxelGrid->value();
-    emit applyVoxelGrid(leafsize);
-}

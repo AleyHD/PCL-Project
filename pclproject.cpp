@@ -5,14 +5,14 @@ PclProject::PclProject(QObject *parent) : QObject(parent)
     // setup visualizer widget
     visualizerWidget_ = new QVTKWidget();
 
+    // setup mainwindow (parent of control bar)
+    this->setupMainWindow();
+
     // setup cropBox
     this->setupCropBox();
 
     // setup visualizer
     this->setupVisualizer();
-
-    // setup mainwindow (parent of control bar)
-    this->setupMainWindow();
 
     // setup controlbar
     this->setupControlBar();
@@ -21,21 +21,21 @@ PclProject::PclProject(QObject *parent) : QObject(parent)
 PclProject::~PclProject()
 {
     delete mainWindow_;
-    //delete controlBar_;
 }
 
 void PclProject::setupMainWindow()
 {
     mainWindow_ = new MainWindow();
     mainWindow_->setVisualizerWidget(visualizerWidget_);
-    mainWindow_->show();
+    mainWindow_->showMaximized();
 
     connect(mainWindow_, SIGNAL(loadCloud(QString)), this, SLOT(loadCloud(QString)));
     connect(mainWindow_, SIGNAL(saveCloud(QString)), this, SLOT(saveCloud(QString)));
     connect(mainWindow_, SIGNAL(unloadCloud()), this, SLOT(unloadCloud()));
     connect(mainWindow_, SIGNAL(unloadAllClouds()), this, SLOT(unloadAllClouds()));
-    connect(mainWindow_, SIGNAL(useNextActiveCloud()), this, SLOT(useNextActiveCloud()));
-    connect(mainWindow_, SIGNAL(usePreviousActiveCloud()), this, SLOT(usePreviousActiveCloud()));
+
+    connect(mainWindow_, SIGNAL(applyVoxelGrid(float)), this, SLOT(applyVoxelGrid(float)));
+    connect(mainWindow_, SIGNAL(removeCloudOutliers(int, double)), this, SLOT(removeCloudOutliers(int, double)));
 
     connect(mainWindow_, SIGNAL(translateCropBox(double, double, double)), this, SLOT(translateCropBox(double, double, double)));
     connect(mainWindow_, SIGNAL(cropCloud()), this, SLOT(cropCloud()));
@@ -55,19 +55,17 @@ void PclProject::setupControlBar()
 
     connect(controlBar_, SIGNAL(setActiveCloud(int)), this, SLOT(setActiveCloud(int)));
     connect(controlBar_, SIGNAL(hideActiveCloud(bool)), this, SLOT(hideActiveCloud(bool)));
-    connect(controlBar_, SIGNAL(applyVoxelGrid(float)), this, SLOT(applyVoxelGrid(float)));
-    connect(controlBar_, SIGNAL(removeCloudOutliers(int, double)), this, SLOT(removeCloudOutliers(int, double)));
-    connect(controlBar_, SIGNAL(setCloudPose(double, double, double, double, double, double)), this, SLOT(setCloudPose(double, double, double, double, double, double)));
     connect(controlBar_, SIGNAL(alignToCloud(QString)), this, SLOT(alignToCloud(QString)));
     connect(controlBar_, SIGNAL(appendToCloud(QString)), this, SLOT(appendToCloud(QString)));
+
+    connect(controlBar_, SIGNAL(setCloudPose(double, double, double, double, double, double)), this, SLOT(setCloudPose(double, double, double, double, double, double)));
 
     connect(controlBar_, SIGNAL(enableCropBox()), this, SLOT(enableCropBox()));
     connect(controlBar_, SIGNAL(disableCropBox()), this, SLOT(disableCropBox()));
     connect(controlBar_, SIGNAL(setCropBoxSize(double)), this, SLOT(setCropBoxSize(double)));
     connect(controlBar_, SIGNAL(setCropBoxMovementFactor(double)), this, SLOT(setCropBoxMovementFactor(double)));
 
-    controlBar_->show();
-    controlBar_->move(20, 200);
+    this->showControlBar();
 }
 
 void PclProject::setupVisualizer()
@@ -115,7 +113,7 @@ void PclProject::saveCloud(QString filePath)
 
 void PclProject::addCloud(PointCloud *cloud)
 {
-    if (!currentCloud_) mainWindow_->setActionSaveCloudEnabled(true);
+    if (!currentCloud_) mainWindow_->setCloudAvailableSettings(true);
 
     currentCloud_ = cloud;
     visualizer_->addPointCloud(cloud);
@@ -140,7 +138,7 @@ void PclProject::unloadCloud()
     if (clouds_.isEmpty()) {    // no cloud left
         delete currentCloud_;
         currentCloud_ = NULL;
-        mainWindow_->setActionSaveCloudEnabled(false);
+        mainWindow_->setCloudAvailableSettings(false);
     }
     else currentCloud_ = clouds_.at(0);
 
@@ -159,7 +157,7 @@ void PclProject::unloadAllClouds()
     controlBar_->removeAvailableClouds();
 
     currentCloud_ = NULL;
-    mainWindow_->setActionSaveCloudEnabled(false);
+    mainWindow_->setCloudAvailableSettings(false);
 
     // update
     this->publishActiveCloud();
@@ -226,6 +224,11 @@ void PclProject::publishActiveCloud()
     controlBar_->updateCloudRotation(rvec.x(), rvec.y(), rvec.z());
 }
 
+void PclProject::updateTransformFile()
+{
+
+}
+
 void PclProject::setDestinationClouds()
 {
     QStringList cloudList;
@@ -260,7 +263,13 @@ void PclProject::cropCloud()
 
 void PclProject::showControlBar()
 {
-    if (controlBar_->isHidden()) controlBar_->show();
+    if (controlBar_->isHidden()) {
+        QRect screenSize = QApplication::desktop()->screenGeometry();
+        double x = screenSize.width() - controlBar_->width();
+        double y = screenSize.height() - controlBar_->height();
+        controlBar_->move(x, y);
+        controlBar_->show();
+    }
 }
 
 /******************************** ControlBar ********************************/

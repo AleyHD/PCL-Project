@@ -4,6 +4,8 @@
 #include <QObject>
 #include <QVector>
 #include <QStringList>
+#include <QApplication>
+#include <QDesktopWidget>
 
 #include "mainwindow.h"
 #include "controlbar.h"
@@ -63,6 +65,7 @@ private:
 
     void addCloud(PointCloud* cloud);
     void publishActiveCloud();
+    void updateTransformFile();
 
 private:
     MainWindow* mainWindow_;

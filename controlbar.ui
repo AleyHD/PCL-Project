@@ -6,338 +6,203 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>395</width>
-    <height>590</height>
+    <width>383</width>
+    <height>186</height>
    </rect>
+  </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
   </property>
   <property name="windowTitle">
    <string>Dialog</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
-    <layout class="QVBoxLayout" name="verticalLayout_Visualizer">
-     <item>
-      <widget class="QLabel" name="label_visualizer">
-       <property name="font">
-        <font>
-         <weight>75</weight>
-         <bold>true</bold>
-        </font>
-       </property>
-       <property name="text">
-        <string>Cloud Visualizer</string>
-       </property>
-       <property name="alignment">
-        <set>Qt::AlignCenter</set>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="Line" name="line_visualizer">
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <layout class="QHBoxLayout" name="horizontalLayout_visualizerEnableCos">
-       <item>
-        <widget class="QCheckBox" name="checkBox_enableCos">
-         <property name="text">
-          <string>Enable Coordinate System</string>
-         </property>
-         <property name="checked">
-          <bool>true</bool>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QDoubleSpinBox" name="doubleSpinBox_visualizerCosScale">
-         <property name="maximum">
-          <double>10000.000000000000000</double>
-         </property>
-         <property name="value">
-          <double>20.000000000000000</double>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QLabel" name="label_visualizerCosScale">
-         <property name="text">
-          <string>Scale</string>
-         </property>
-        </widget>
-       </item>
-      </layout>
-     </item>
-     <item>
-      <widget class="QCheckBox" name="checkBox_visualizerShowHeadUpDisplay">
-       <property name="text">
-        <string>Show Head Up Display</string>
-       </property>
-       <property name="checked">
-        <bool>true</bool>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QPushButton" name="pushButton_visualizerResetCamera">
-       <property name="text">
-        <string>Reset Camera</string>
-       </property>
-      </widget>
-     </item>
-    </layout>
-   </item>
-   <item>
-    <spacer name="verticalSpacer_visualizer">
-     <property name="orientation">
-      <enum>Qt::Vertical</enum>
+    <widget class="QTabWidget" name="tabWidget">
+     <property name="currentIndex">
+      <number>0</number>
      </property>
-     <property name="sizeHint" stdset="0">
-      <size>
-       <width>20</width>
-       <height>40</height>
-      </size>
-     </property>
-    </spacer>
-   </item>
-   <item>
-    <layout class="QVBoxLayout" name="verticalLayout_cloud">
-     <item>
-      <widget class="QLabel" name="label_cloud">
-       <property name="font">
-        <font>
-         <weight>75</weight>
-         <bold>true</bold>
-        </font>
-       </property>
-       <property name="text">
-        <string>Active Cloud</string>
-       </property>
-       <property name="alignment">
-        <set>Qt::AlignCenter</set>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="Line" name="line_cloud">
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <layout class="QHBoxLayout" name="horizontalLayout_cloudSetActiveCloud">
+     <widget class="QWidget" name="tab_selector">
+      <attribute name="title">
+       <string>Selector</string>
+      </attribute>
+      <layout class="QVBoxLayout" name="verticalLayout_2">
        <item>
-        <widget class="QLabel" name="label_cloudSetActiveCloud">
-         <property name="text">
-          <string>Set Active Cloud:</string>
-         </property>
-        </widget>
+        <layout class="QVBoxLayout" name="verticalLayout_selectorActiveCloud">
+         <item>
+          <layout class="QHBoxLayout" name="horizontalLayout_cloudSetActiveCloud">
+           <item>
+            <widget class="QLabel" name="label_cloudSetActiveCloud">
+             <property name="text">
+              <string>Select Active Cloud:</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QComboBox" name="comboBox_cloudSetActiveCloud"/>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <widget class="QCheckBox" name="checkBox_cloudHideCloud">
+           <property name="text">
+            <string>Hide Active Cloud</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
        </item>
        <item>
-        <widget class="QComboBox" name="comboBox_cloudSetActiveCloud"/>
+        <spacer name="verticalSpacer_selector">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>40</height>
+          </size>
+         </property>
+        </spacer>
        </item>
       </layout>
-     </item>
-     <item>
-      <widget class="QCheckBox" name="checkBox_cloudHideCloud">
-       <property name="text">
-        <string>Hide Active Cloud</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <layout class="QHBoxLayout" name="horizontalLayout_cloudRemoveOutliers">
+     </widget>
+     <widget class="QWidget" name="tab_mover">
+      <attribute name="title">
+       <string>Mover</string>
+      </attribute>
+      <layout class="QVBoxLayout" name="verticalLayout_4">
        <item>
-        <widget class="QLabel" name="label_cloudRemoveOutliersNeighbors">
+        <layout class="QHBoxLayout" name="horizontalLayout_cloudMoveX">
+         <item>
+          <widget class="QLabel" name="label_cloudTranslationX">
+           <property name="text">
+            <string>Translation X:</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QDoubleSpinBox" name="doubleSpinBox_cloudTranslationX">
+           <property name="minimum">
+            <double>-100.000000000000000</double>
+           </property>
+           <property name="maximum">
+            <double>100.000000000000000</double>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="label_cloudRotationX">
+           <property name="text">
+            <string>Rotation @ X:</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QDoubleSpinBox" name="doubleSpinBox_cloudRotationX">
+           <property name="minimum">
+            <double>-180.000000000000000</double>
+           </property>
+           <property name="maximum">
+            <double>180.000000000000000</double>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <layout class="QHBoxLayout" name="horizontalLayout_cloudMoveY">
+         <item>
+          <widget class="QLabel" name="label_cloudTranslationY">
+           <property name="text">
+            <string>Translation Y:</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QDoubleSpinBox" name="doubleSpinBox_cloudTranslationY">
+           <property name="minimum">
+            <double>-100.000000000000000</double>
+           </property>
+           <property name="maximum">
+            <double>100.000000000000000</double>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="label_cloudRotationY">
+           <property name="text">
+            <string>Rotation @ Y:</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QDoubleSpinBox" name="doubleSpinBox_cloudRotationY">
+           <property name="minimum">
+            <double>-180.000000000000000</double>
+           </property>
+           <property name="maximum">
+            <double>180.000000000000000</double>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <layout class="QHBoxLayout" name="horizontalLayout_cloudMoveZ">
+         <item>
+          <widget class="QLabel" name="label_cloudTranslationZ">
+           <property name="text">
+            <string>Translation Z:</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QDoubleSpinBox" name="doubleSpinBox_cloudTranslationZ">
+           <property name="minimum">
+            <double>-100.000000000000000</double>
+           </property>
+           <property name="maximum">
+            <double>100.000000000000000</double>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="label_doubleSpinBox_cloudRotationZ">
+           <property name="text">
+            <string>Rotation @ Z:</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QDoubleSpinBox" name="doubleSpinBox_cloudRotationZ">
+           <property name="minimum">
+            <double>-180.000000000000000</double>
+           </property>
+           <property name="maximum">
+            <double>180.000000000000000</double>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <widget class="QPushButton" name="pushButton_cloudMoveCloud">
          <property name="text">
-          <string>Neighbors:</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QSpinBox" name="spinBox_cloudRemoveOutliersNeighbors">
-         <property name="minimum">
-          <number>1</number>
-         </property>
-         <property name="value">
-          <number>50</number>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QLabel" name="label_cloudRemoveOutliersDeviation">
-         <property name="text">
-          <string>Deviation:</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QDoubleSpinBox" name="doubleSpinBox_cloudRemoveOutliersDeviation">
-         <property name="value">
-          <double>1.000000000000000</double>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QPushButton" name="pushButton_cloudRemoveOutliers">
-         <property name="text">
-          <string>Remove Outliers</string>
-         </property>
-        </widget>
-       </item>
-      </layout>
-     </item>
-     <item>
-      <layout class="QHBoxLayout" name="horizontalLayout_cloudVoxelGrid">
-       <item>
-        <widget class="QLabel" name="label_cloudVoxelGrid">
-         <property name="text">
-          <string>Voxel Leafsize:</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QDoubleSpinBox" name="doubleSpinBox_cloudVoxelGrid">
-         <property name="value">
-          <double>0.100000000000000</double>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QPushButton" name="pushButton_cloudVoxelGrid">
-         <property name="text">
-          <string>Apply Voxel Grid</string>
-         </property>
-        </widget>
-       </item>
-      </layout>
-     </item>
-     <item>
-      <layout class="QHBoxLayout" name="horizontalLayout_cloudMoveX">
-       <item>
-        <widget class="QLabel" name="label_cloudTranslationX">
-         <property name="text">
-          <string>Translation X:</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QDoubleSpinBox" name="doubleSpinBox_cloudTranslationX">
-         <property name="minimum">
-          <double>-100.000000000000000</double>
-         </property>
-         <property name="maximum">
-          <double>100.000000000000000</double>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QLabel" name="label_cloudRotationX">
-         <property name="text">
-          <string>Rotation @ X:</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QDoubleSpinBox" name="doubleSpinBox_cloudRotationX">
-         <property name="minimum">
-          <double>-180.000000000000000</double>
-         </property>
-         <property name="maximum">
-          <double>180.000000000000000</double>
-         </property>
-        </widget>
-       </item>
-      </layout>
-     </item>
-     <item>
-      <layout class="QHBoxLayout" name="horizontalLayout_cloudMoveY">
-       <item>
-        <widget class="QLabel" name="label_cloudTranslationY">
-         <property name="text">
-          <string>Translation Y:</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QDoubleSpinBox" name="doubleSpinBox_cloudTranslationY">
-         <property name="minimum">
-          <double>-100.000000000000000</double>
-         </property>
-         <property name="maximum">
-          <double>100.000000000000000</double>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QLabel" name="label_cloudRotationY">
-         <property name="text">
-          <string>Rotation @ Y:</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QDoubleSpinBox" name="doubleSpinBox_cloudRotationY">
-         <property name="minimum">
-          <double>-180.000000000000000</double>
-         </property>
-         <property name="maximum">
-          <double>180.000000000000000</double>
+          <string>Execute Cloud Movement</string>
          </property>
         </widget>
        </item>
       </layout>
-     </item>
-     <item>
-      <layout class="QHBoxLayout" name="horizontalLayout_cloudMoveZ">
-       <item>
-        <widget class="QLabel" name="label_cloudTranslationZ">
-         <property name="text">
-          <string>Translation Z:</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QDoubleSpinBox" name="doubleSpinBox_cloudTranslationZ">
-         <property name="minimum">
-          <double>-100.000000000000000</double>
-         </property>
-         <property name="maximum">
-          <double>100.000000000000000</double>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QLabel" name="label_doubleSpinBox_cloudRotationZ">
-         <property name="text">
-          <string>Rotation @ Z:</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QDoubleSpinBox" name="doubleSpinBox_cloudRotationZ">
-         <property name="minimum">
-          <double>-180.000000000000000</double>
-         </property>
-         <property name="maximum">
-          <double>180.000000000000000</double>
-         </property>
-        </widget>
-       </item>
-      </layout>
-     </item>
-     <item>
-      <widget class="QPushButton" name="pushButton_cloudMoveCloud">
-       <property name="text">
-        <string>Move Cloud</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <layout class="QVBoxLayout" name="verticalLayout_cloudDestionation">
+     </widget>
+     <widget class="QWidget" name="tab_merger">
+      <attribute name="title">
+       <string>Merger</string>
+      </attribute>
+      <layout class="QVBoxLayout" name="verticalLayout_6">
        <item>
         <layout class="QHBoxLayout" name="horizontalLayout_cloudDestinationChooser">
          <item>
@@ -360,7 +225,7 @@
             <bool>true</bool>
            </property>
            <property name="text">
-            <string>Align to Destination</string>
+            <string>ICP Align to Destination</string>
            </property>
           </widget>
          </item>
@@ -376,101 +241,163 @@
          </item>
         </layout>
        </item>
+       <item>
+        <spacer name="verticalSpacer_merger">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>40</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
       </layout>
-     </item>
-    </layout>
-   </item>
-   <item>
-    <spacer name="verticalSpacer_cloud">
-     <property name="orientation">
-      <enum>Qt::Vertical</enum>
-     </property>
-     <property name="sizeHint" stdset="0">
-      <size>
-       <width>20</width>
-       <height>40</height>
-      </size>
-     </property>
-    </spacer>
-   </item>
-   <item>
-    <layout class="QVBoxLayout" name="verticalLayout_cropBox">
-     <item>
-      <widget class="QLabel" name="label_cropBox">
-       <property name="font">
-        <font>
-         <weight>75</weight>
-         <bold>true</bold>
-        </font>
-       </property>
-       <property name="text">
-        <string>CropBox</string>
-       </property>
-       <property name="alignment">
-        <set>Qt::AlignCenter</set>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="Line" name="line_cropBox">
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <layout class="QHBoxLayout" name="horizontalLayout_cropBoxCheckBox">
+     </widget>
+     <widget class="QWidget" name="tab_cropBox">
+      <attribute name="title">
+       <string>CropBox</string>
+      </attribute>
+      <layout class="QVBoxLayout" name="verticalLayout_5">
        <item>
         <widget class="QCheckBox" name="checkBox_cropBoxEnableCropBox">
          <property name="text">
-          <string>Enable CropBox</string>
+          <string>Enable CropBox (Moveable via Numpad)</string>
          </property>
          <property name="checked">
           <bool>true</bool>
          </property>
         </widget>
        </item>
+       <item>
+        <layout class="QHBoxLayout" name="horizontalLayout_cropBoxSize">
+         <item>
+          <widget class="QLabel" name="label_cropBoxSize">
+           <property name="text">
+            <string>3D CropBox Size:</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QDoubleSpinBox" name="doubleSpinBox_cropBoxSize">
+           <property name="value">
+            <double>10.000000000000000</double>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <layout class="QHBoxLayout" name="horizontalLayout_cropBoxMovementFactor">
+         <item>
+          <widget class="QLabel" name="label_cropBoxMovementFactor">
+           <property name="text">
+            <string>Movement Factor:</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QDoubleSpinBox" name="doubleSpinBox_cropBoxMovementFactor">
+           <property name="singleStep">
+            <double>0.100000000000000</double>
+           </property>
+           <property name="value">
+            <double>1.000000000000000</double>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <spacer name="verticalSpacer_cropBox">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>40</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
       </layout>
-     </item>
-     <item>
-      <layout class="QHBoxLayout" name="horizontalLayout_cropBoxValues">
+     </widget>
+     <widget class="QWidget" name="tab_visualizer">
+      <attribute name="title">
+       <string>Visualizer</string>
+      </attribute>
+      <layout class="QVBoxLayout" name="verticalLayout_3">
        <item>
-        <widget class="QLabel" name="label_cropBoxSize">
+        <widget class="QCheckBox" name="checkBox_visualizerShowHeadUpDisplay">
          <property name="text">
-          <string>Size:</string>
+          <string>Show Head Up Display</string>
+         </property>
+         <property name="checked">
+          <bool>true</bool>
          </property>
         </widget>
        </item>
        <item>
-        <widget class="QDoubleSpinBox" name="doubleSpinBox_cropBoxSize">
-         <property name="value">
-          <double>10.000000000000000</double>
-         </property>
-        </widget>
+        <layout class="QHBoxLayout" name="horizontalLayout_visualizerEnableCos">
+         <item>
+          <widget class="QCheckBox" name="checkBox_enableCos">
+           <property name="text">
+            <string>Enable Coordinate System</string>
+           </property>
+           <property name="checked">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+        </layout>
        </item>
        <item>
-        <widget class="QLabel" name="label_cropBoxMovementFactor">
+        <layout class="QHBoxLayout" name="horizontalLayout_visualizerCosScale">
+         <item>
+          <widget class="QLabel" name="label_visualizerCosScale">
+           <property name="text">
+            <string>Coordinate System Scale:</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QDoubleSpinBox" name="doubleSpinBox_visualizerCosScale">
+           <property name="maximum">
+            <double>10000.000000000000000</double>
+           </property>
+           <property name="value">
+            <double>20.000000000000000</double>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <spacer name="verticalSpacer">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>40</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item>
+        <widget class="QPushButton" name="pushButton_visualizerResetCamera">
          <property name="text">
-          <string>Movement Factor:</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QDoubleSpinBox" name="doubleSpinBox_cropBoxMovementFactor">
-         <property name="singleStep">
-          <double>0.100000000000000</double>
-         </property>
-         <property name="value">
-          <double>1.000000000000000</double>
+          <string>Reset Camera</string>
          </property>
         </widget>
        </item>
       </layout>
-     </item>
-     <item>
-      <layout class="QHBoxLayout" name="horizontalLayout_cropBoxMovementFactor"/>
-     </item>
-    </layout>
+     </widget>
+    </widget>
    </item>
   </layout>
  </widget>

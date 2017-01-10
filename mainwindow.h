@@ -4,6 +4,9 @@
 #include <QMainWindow>
 #include <QFileDialog>
 #include <QLayout>
+#include <QDialogButtonBox>
+#include <QLabel>
+#include <QDoubleSpinBox>
 #include <QAction>
 #include <QKeyEvent>
 #include <QVTKWidget.h>
@@ -22,7 +25,7 @@ public:
 
     void setVisualizerWidget(QVTKWidget *widget);
     void showMessageOnStatusBar(QString &message, int timeout);
-    void setActionSaveCloudEnabled(bool decision);
+    void setCloudAvailableSettings(bool decision);
     void setCropBoxMovementFactor(double factor) { cropBoxMovementFactor_ = factor; }
 
 signals:
@@ -35,6 +38,9 @@ signals:
 
     void showControlBar();
 
+    void applyVoxelGrid(float);
+    void removeCloudOutliers(int, double);
+
     void translateCropBox(double, double, double);
     void cropCloud();
 
@@ -43,16 +49,22 @@ protected:
 
 private slots:
 
-    void on_action_loadCloud_triggered();
-    void on_action_saveCloud_triggered();
-    void on_action_unloadCloud_triggered();
-    void on_action_unloadAllClouds_triggered();
+    void on_action_fileLoadCloud_triggered();
+    void on_action_fileSaveCloud_triggered();
+    void on_action_fileUnloadCloud_triggered();
+    void on_action_fileUnloadAllClouds_triggered();
 
     void on_action_showControlBar_triggered();
+
+    void on_action_filterVoxelGrid_triggered();
+    void on_action_filterStatisticalOutlierRemoval_triggered();
 
 private:
     Ui::MainWindow *ui;
     double cropBoxMovementFactor_;
+    float voxelLeafsize_;
+    int statisticalNeighbors_;
+    double statisticalDeviation_;
 };
 
 #endif // MAINWINDOW_H

@@ -42,8 +42,6 @@ signals:
     // cloud
     void setActiveCloud(int);
     void hideActiveCloud(bool);
-    void applyVoxelGrid(float);
-    void removeCloudOutliers(int, double);
     void setCloudPose(double, double, double, double, double, double);
     void alignToCloud(QString);
     void appendToCloud(QString);
@@ -51,8 +49,6 @@ signals:
     // cropbox
     void enableCropBox();
     void disableCropBox();
-    void enableCropBoxHighlight();
-    void disableCropBoxHighlight();
     void setCropBoxSize(double);
     void setCropBoxMovementFactor(double);
 
@@ -64,8 +60,6 @@ private slots:
     void on_pushButton_visualizerResetCamera_clicked() { emit resetCamera(); }
 
     // cloud
-    void on_pushButton_cloudRemoveOutliers_clicked();
-    void on_pushButton_cloudVoxelGrid_clicked();
     void on_checkBox_cloudHideCloud_clicked(bool checked) { hideActiveCloud(checked); }
     void on_pushButton_cloudMoveCloud_clicked();
     void on_comboBox_cloudSetActiveCloud_currentIndexChanged(int index) { emit setActiveCloud(index); }

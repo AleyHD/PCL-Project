@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1306</width>
-    <height>961</height>
+    <width>640</width>
+    <height>480</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -21,28 +21,36 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1306</width>
+     <width>640</width>
      <height>20</height>
     </rect>
    </property>
-   <widget class="QMenu" name="menuFile">
+   <widget class="QMenu" name="menu_file">
     <property name="title">
      <string>&amp;File</string>
     </property>
-    <addaction name="action_loadCloud"/>
-    <addaction name="action_saveCloud"/>
+    <addaction name="action_fileLoadCloud"/>
+    <addaction name="action_fileSaveCloud"/>
     <addaction name="separator"/>
-    <addaction name="action_unloadCloud"/>
-    <addaction name="action_unloadAllClouds"/>
+    <addaction name="action_fileUnloadCloud"/>
+    <addaction name="action_fileUnloadAllClouds"/>
    </widget>
-   <widget class="QMenu" name="menu_Window">
+   <widget class="QMenu" name="menu_window">
     <property name="title">
      <string>&amp;Window</string>
     </property>
     <addaction name="action_showControlBar"/>
    </widget>
-   <addaction name="menuFile"/>
-   <addaction name="menu_Window"/>
+   <widget class="QMenu" name="menu_filter">
+    <property name="title">
+     <string>&amp;Filter</string>
+    </property>
+    <addaction name="action_filterVoxelGrid"/>
+    <addaction name="action_filterStatisticalOutlierRemoval"/>
+   </widget>
+   <addaction name="menu_file"/>
+   <addaction name="menu_filter"/>
+   <addaction name="menu_window"/>
   </widget>
   <widget class="QToolBar" name="mainToolBar">
    <attribute name="toolBarArea">
@@ -53,36 +61,36 @@
    </attribute>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
-  <action name="action_loadCloud">
+  <action name="action_fileLoadCloud">
    <property name="text">
-    <string>&amp;Load Cloud</string>
+    <string>&amp;Load Cloud...</string>
    </property>
    <property name="shortcut">
     <string>Ctrl+O</string>
    </property>
   </action>
-  <action name="action_saveCloud">
+  <action name="action_fileSaveCloud">
    <property name="enabled">
     <bool>false</bool>
    </property>
    <property name="text">
-    <string>&amp;Save Cloud</string>
+    <string>&amp;Save Cloud As...</string>
    </property>
    <property name="shortcut">
     <string>Ctrl+S</string>
    </property>
   </action>
-  <action name="action_unloadCloud">
+  <action name="action_fileUnloadCloud">
    <property name="text">
-    <string>Unload Cloud</string>
+    <string>&amp;Unload Cloud</string>
    </property>
    <property name="shortcut">
     <string>Ctrl+W</string>
    </property>
   </action>
-  <action name="action_unloadAllClouds">
+  <action name="action_fileUnloadAllClouds">
    <property name="text">
-    <string>Unload All Clouds</string>
+    <string>&amp;Unload All Clouds</string>
    </property>
    <property name="shortcut">
     <string>Ctrl+Shift+W</string>
@@ -91,6 +99,28 @@
   <action name="action_showControlBar">
    <property name="text">
     <string>Show Control Bar</string>
+   </property>
+  </action>
+  <action name="action_filterStatisticalOutlierRemoval">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="text">
+    <string>&amp;Statistical Outlier Removal</string>
+   </property>
+   <property name="shortcut">
+    <string>Shift+S</string>
+   </property>
+  </action>
+  <action name="action_filterVoxelGrid">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="text">
+    <string>&amp;VoxelGrid</string>
+   </property>
+   <property name="shortcut">
+    <string>Shift+V</string>
    </property>
   </action>
  </widget>
