@@ -31,6 +31,7 @@
     </property>
     <addaction name="action_fileLoadCloud"/>
     <addaction name="action_fileSaveCloud"/>
+    <addaction name="action_fileSaveCloudAs"/>
     <addaction name="separator"/>
     <addaction name="action_fileUnloadCloud"/>
     <addaction name="action_fileUnloadAllClouds"/>
@@ -69,15 +70,12 @@
     <string>Ctrl+O</string>
    </property>
   </action>
-  <action name="action_fileSaveCloud">
+  <action name="action_fileSaveCloudAs">
    <property name="enabled">
     <bool>false</bool>
    </property>
    <property name="text">
     <string>&amp;Save Cloud As...</string>
-   </property>
-   <property name="shortcut">
-    <string>Ctrl+S</string>
    </property>
   </action>
   <action name="action_fileUnloadCloud">
@@ -121,6 +119,17 @@
    </property>
    <property name="shortcut">
     <string>Shift+V</string>
+   </property>
+  </action>
+  <action name="action_fileSaveCloud">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="text">
+    <string>&amp;Save Cloud</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+S</string>
    </property>
   </action>
  </widget>

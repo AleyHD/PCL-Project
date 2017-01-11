@@ -37,6 +37,11 @@ void ControlBar::removeAvailableCloud(int index)
     ui->comboBox_cloudSetActiveCloud->removeItem(index);
 }
 
+void ControlBar::updateAvailableCloud(int index, QString cloud)
+{
+    ui->comboBox_cloudSetActiveCloud->setItemText(index, cloud);
+}
+
 void ControlBar::removeAvailableClouds()
 {
     ui->comboBox_cloudSetActiveCloud->clear();

@@ -19,6 +19,7 @@ SET (PROJECT_SOURCES  main.cpp                # Add cpp Files
                       Libs/pointcloud.cpp
                       Libs/pointcloudvisualizer.cpp
                       Libs/cropbox.cpp
+                      Libs/fileio.cpp
                       )
 SET (PROJECT_HEADERS  mainwindow.h            # Add h Files
                       pclproject.h
@@ -26,6 +27,7 @@ SET (PROJECT_HEADERS  mainwindow.h            # Add h Files
                       Libs/pointcloud.h
                       Libs/pointcloudvisualizer.h
                       Libs/cropbox.h
+                      Libs/fileio.h
                       )
 SET (PROJECT_FORMS    mainwindow.ui           # Add ui Files
                       controlbar.ui

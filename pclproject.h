@@ -6,6 +6,7 @@
 #include <QStringList>
 #include <QApplication>
 #include <QDesktopWidget>
+#include <QTextStream>
 
 #include "mainwindow.h"
 #include "controlbar.h"
@@ -26,6 +27,7 @@ public slots:
     // mainwindow
     void loadCloud(QString filePath);
     void saveCloud(QString filePath);
+    void saveCloud();
     void unloadCloud();
     void unloadAllClouds();
     void useNextActiveCloud();
@@ -65,7 +67,6 @@ private:
 
     void addCloud(PointCloud* cloud);
     void publishActiveCloud();
-    void updateTransformFile();
 
 private:
     MainWindow* mainWindow_;
@@ -76,6 +77,7 @@ private:
     QVTKWidget* visualizerWidget_ = NULL;
     CropBox *cropBox_ = NULL;
     bool cropBoxEnabled_;
+    QString transformFilepath_;
 };
 
 #endif // PCLPROJECT_H

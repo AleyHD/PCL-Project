@@ -5,6 +5,9 @@
 #include <QVector>
 #include <QVector3D>
 #include <QVector4D>
+#include <QFileInfo>
+
+#include "Libs/fileio.h"
 
 // Point Cloud Library (PCL)
 #include <pcl/io/pcd_io.h>
@@ -36,6 +39,7 @@ public:
     explicit PointCloud(QString name, QObject *parent = 0);
     void loadFile(const QString &filePath);
     void saveFile(const QString &filePath);
+    void saveFile();
     void setTranslation(float x, float y, float z);
     void translate(float x, float y, float z);
     void translateToOrigin();
@@ -43,17 +47,20 @@ public:
     void setRotationDegree(Axis axis, float angle);
     void rotateDegree(Axis axis, float angle);
     void setPose(float posX, float posY, float posZ, float rotX, float rotY, float rotZ);
-    void extractPlane(PointCloud *outputPlane, bool cut = true, int maxIterations = 100, double threshold = 1.0);
+    void extractPlane(PointCloud *outputPlane, int maxIterations = 100, double distanceThreshold = 1.0, double cloudThreshold = 0.3, bool cut = true);
     void removeStatisticalOutliers(int neighbors = 50, double deviationThreshold = 1.0);
     QVector4D compute3DCentroid();
     bool alignToCloud(PointCloud *cloud);
     void appendCloud(PointCloud *cloud2Add);
     void appendCloudSBS(PointCloud *cloud2AddSBS);
+    bool loadTransformFromFile(const QString &filePath);
+    bool saveTransformToFile(const QString &filePath);
 
     size_t points();
     pcl::PointCloud<PointT>::Ptr pclCloud() { return cloud_; }
     void setPclCloud(pcl::PointCloud<PointT>::Ptr cloud);
     QString name() { return name_; }
+    QString filePath() { return filePath_; }
     QVector3D currentTranslation() { return currentTranslation_; }
     QVector3D currentRotation() { return currentRotation_; }
 
@@ -64,6 +71,7 @@ signals:
 public slots:
 
 private:
+    QString transformString();
     void translatePclCloud(float x, float y, float z);
     void rotatePclCloud(Axis axis, float theta);
     void transformPclCloud(float posX, float posY, float posZ, float rotX, float rotY, float rotZ);
@@ -73,6 +81,8 @@ private:
     QVector3D currentTranslation_;
     QVector3D currentRotation_;
     QString name_;
+    QString filePath_;
+    FileIO* fileIO_;
 };
 
 #endif // POINTCLOUD_H

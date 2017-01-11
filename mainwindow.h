@@ -31,6 +31,7 @@ public:
 signals:
     void loadCloud(QString);
     void saveCloud(QString);
+    void saveCloud();
     void unloadCloud();
     void unloadAllClouds();
     void useNextActiveCloud();
@@ -51,6 +52,7 @@ private slots:
 
     void on_action_fileLoadCloud_triggered();
     void on_action_fileSaveCloud_triggered();
+    void on_action_fileSaveCloudAs_triggered();
     void on_action_fileUnloadCloud_triggered();
     void on_action_fileUnloadAllClouds_triggered();
 

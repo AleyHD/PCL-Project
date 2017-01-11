@@ -26,6 +26,7 @@ public:
     void updateHideActiveCloud(bool checked);
     void insertAvailableCloud(QString cloud);
     void removeAvailableCloud(int index);
+    void updateAvailableCloud(int index, QString cloud);
     void removeAvailableClouds();
     void updateCloudTranslation(double x, double y, double z);
     void updateCloudRotation(double angleX, double angleY, double angleZ);

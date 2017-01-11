@@ -5,11 +5,13 @@ PointCloud::PointCloud(QString name, QObject *parent) :
     cloud_(new pcl::PointCloud<PointT>)
 {
     name_ = name;
+    fileIO_ = new FileIO(this);
 }
 
 void PointCloud::loadFile(const QString &filePath)
 {
     pcl::io::loadPCDFile<PointT>(filePath.toStdString(), *cloud_);
+    filePath_ = filePath;
 
     // publish changes
     emit updated();
@@ -17,8 +19,19 @@ void PointCloud::loadFile(const QString &filePath)
 
 void PointCloud::saveFile(const QString &filePath)
 {
-
     pcl::io::savePCDFileASCII(filePath.toStdString(), *cloud_);
+
+    // get filename without extension
+    QFileInfo fileInfo(filePath);
+    QString fileName = fileInfo.baseName();
+
+    name_ = fileName;
+    filePath_ = filePath;
+}
+
+void PointCloud::saveFile()
+{
+    pcl::io::savePCDFileASCII(filePath_.toStdString(), *cloud_);
 }
 
 size_t PointCloud::points()
@@ -134,7 +147,7 @@ void PointCloud::setPose(float posX, float posY, float posZ, float rotX, float r
     this->transformPclCloud(posRel.x(), posRel.y(), posRel.z(), rotRel.x(), rotRel.y(), rotRel.z());
 }
 
-void PointCloud::extractPlane(PointCloud *outputPlane, bool cut, int maxIterations, double threshold)
+void PointCloud::extractPlane(PointCloud *outputPlane, int maxIterations, double distanceThreshold, double cloudThreshold, bool cut)
 {
     // Segment the largest planar component
     pcl::ModelCoefficients::Ptr coefficients (new pcl::ModelCoefficients);
@@ -147,8 +160,8 @@ void PointCloud::extractPlane(PointCloud *outputPlane, bool cut, int maxIteratio
     // Mandatory
     seg.setModelType(pcl::SACMODEL_PLANE);
     seg.setMethodType(pcl::SAC_RANSAC);
-    seg.setMaxIterations(10);
-    seg.setDistanceThreshold(1);
+    seg.setMaxIterations(maxIterations);
+    seg.setDistanceThreshold(distanceThreshold);
 
     // indices extraction filter
     pcl::ExtractIndices<PointT> extract;
@@ -160,7 +173,7 @@ void PointCloud::extractPlane(PointCloud *outputPlane, bool cut, int maxIteratio
     int i = 0, nr_points = (int) cloud_->points.size ();
 
     // While 30% of the original cloud is still there
-    while (remainingCloud->points.size () > 0.3 * nr_points) {
+    while (remainingCloud->points.size () > cloudThreshold * nr_points) {
         // Segment the largest planar component from the remaining cloud
         seg.setInputCloud(remainingCloud);
         // get inliers & coefficients
@@ -250,6 +263,72 @@ void PointCloud::appendCloudSBS(PointCloud *cloud2AddSBS)
 
     // publish changes
     emit updated();
+}
+
+bool PointCloud::loadTransformFromFile(const QString &filePath)
+{
+    // read file in QStringList
+    QStringList lines = fileIO_->readTextFile(filePath);
+    if (lines.isEmpty()) return false;
+    // search cloud
+    size_t lineIndex = 0;
+    QStringList lineElements;
+    for (QStringList::iterator it=lines.begin(); it!=lines.end(); ++it) {
+        QString line = *it;
+        lineElements = line.split(';');
+        if (!lineElements.size()) continue;
+        if (lineElements.at(0) == name_) break;
+        ++lineIndex;
+    }
+    // check if line is correct
+    if (lineIndex == lines.size()) return false;
+    if (lineElements.size() != 7) return false;
+    // convert to numbers
+    QVector3D translation(lineElements.at(1).toDouble(),
+                          lineElements.at(2).toDouble(),
+                          lineElements.at(3).toDouble());
+    QVector3D rotation(lineElements.at(4).toDouble(),
+                       lineElements.at(5).toDouble(),
+                       lineElements.at(6).toDouble());
+    // update values
+    currentTranslation_ = translation;
+    currentRotation_ = rotation;
+    return true;
+}
+
+bool PointCloud::saveTransformToFile(const QString &filePath)
+{
+    // read file in QStringList
+    QStringList lines = fileIO_->readTextFile(filePath);
+    // search cloud
+    size_t lineIndex = 0;
+    for (QStringList::iterator it=lines.begin(); it!=lines.end(); ++it) {
+        QString line = *it;
+        QStringList lineElements = line.split(';');
+        if (!lineElements.size()) continue;
+        if (lineElements.at(0) == name_) break;
+        ++lineIndex;
+    }
+    // get current transform
+    QString transform = this->transformString();
+    // add/replace transform
+    if (lineIndex < lines.size()) lines[lineIndex] = transform;
+    else lines += transform;
+    // update file
+    return fileIO_->saveTextFile(filePath, lines);
+}
+
+QString PointCloud::transformString()
+{
+    QString translation = QString(";%1;%2;%3").arg(currentTranslation_.x())
+                                              .arg(currentTranslation_.y())
+                                              .arg(currentTranslation_.z());
+
+    QString rotation = QString(";%1;%2;%3").arg(currentRotation_.x())
+                                           .arg(currentRotation_.y())
+                                           .arg(currentRotation_.z());
+
+    return name_+translation+rotation;
 }
 
 void PointCloud::setPclCloud(pcl::PointCloud<PointT>::Ptr cloud)

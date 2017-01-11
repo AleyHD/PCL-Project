@@ -16,6 +16,9 @@ PclProject::PclProject(QObject *parent) : QObject(parent)
 
     // setup controlbar
     this->setupControlBar();
+
+    // fill variables
+    transformFilepath_ = QCoreApplication::applicationDirPath()+"/transform.csv";
 }
 
 PclProject::~PclProject()
@@ -31,6 +34,7 @@ void PclProject::setupMainWindow()
 
     connect(mainWindow_, SIGNAL(loadCloud(QString)), this, SLOT(loadCloud(QString)));
     connect(mainWindow_, SIGNAL(saveCloud(QString)), this, SLOT(saveCloud(QString)));
+    connect(mainWindow_, SIGNAL(saveCloud()), this, SLOT(saveCloud()));
     connect(mainWindow_, SIGNAL(unloadCloud()), this, SLOT(unloadCloud()));
     connect(mainWindow_, SIGNAL(unloadAllClouds()), this, SLOT(unloadAllClouds()));
 
@@ -95,6 +99,7 @@ void PclProject::loadCloud(QString filePath)
     PointCloud* cloud = new PointCloud(fileName, this);
 
     cloud->loadFile(filePath);
+    cloud->loadTransformFromFile(transformFilepath_);
     //cloud->translateToOrigin();
 
     this->addCloud(cloud);
@@ -106,9 +111,30 @@ void PclProject::loadCloud(QString filePath)
 void PclProject::saveCloud(QString filePath)
 {
     if (!currentCloud_) return;
+
+    // hide cloud in case of new name
+    visualizer_->hidePointCloud(currentCloud_);
+
+    // save file & transform
     currentCloud_->saveFile(filePath);
-    this->unloadCloud();
-    this->loadCloud(filePath);
+    currentCloud_->saveTransformToFile(transformFilepath_);
+
+    // add cloud in visualizer again
+    visualizer_->addPointCloud(currentCloud_);
+
+    // update name to the needs
+    int cloudIndex = clouds_.indexOf(currentCloud_);
+    controlBar_->updateAvailableCloud(cloudIndex, currentCloud_->name());
+    this->publishActiveCloud();
+}
+
+void PclProject::saveCloud()
+{
+    if (!currentCloud_) return;
+
+    // save file & transform
+    currentCloud_->saveFile();
+    currentCloud_->saveTransformToFile(transformFilepath_);
 }
 
 void PclProject::addCloud(PointCloud *cloud)
@@ -217,16 +243,14 @@ void PclProject::publishActiveCloud()
     visualizer_->updateHeadUpDisplay(currentCloud_);
     this->setDestinationClouds();
 
+    controlBar_->updateCloudTranslation(0.0, 0.0, 0.0);
+    controlBar_->updateCloudRotation(0.0, 0.0, 0.0);
+
     if (!currentCloud_) return;
     QVector3D tvec = currentCloud_->currentTranslation();
     QVector3D rvec = currentCloud_->currentRotation();
     controlBar_->updateCloudTranslation(tvec.x(), tvec.y(), tvec.z());
     controlBar_->updateCloudRotation(rvec.x(), rvec.y(), rvec.z());
-}
-
-void PclProject::updateTransformFile()
-{
-
 }
 
 void PclProject::setDestinationClouds()
@@ -322,6 +346,11 @@ void PclProject::alignToCloud(QString cloudName)
             break;
         }
     }
+
+    QVector3D tvec = currentCloud_->currentTranslation();
+    QVector3D rvec = currentCloud_->currentRotation();
+    controlBar_->updateCloudTranslation(tvec.x(), tvec.y(), tvec.z());
+    controlBar_->updateCloudRotation(rvec.x(), rvec.y(), rvec.z());
 }
 
 void PclProject::appendToCloud(QString cloudName)

@@ -36,6 +36,7 @@ void MainWindow::showMessageOnStatusBar(QString &message, int timeout)
 void MainWindow::setCloudAvailableSettings(bool decision)
 {
     ui->action_fileSaveCloud->setEnabled(decision);
+    ui->action_fileSaveCloudAs->setEnabled(decision);
     ui->action_filterStatisticalOutlierRemoval->setEnabled(decision);
     ui->action_filterVoxelGrid->setEnabled(decision);
 }
@@ -54,6 +55,11 @@ void MainWindow::on_action_fileLoadCloud_triggered()
 }
 
 void MainWindow::on_action_fileSaveCloud_triggered()
+{
+    emit saveCloud();
+}
+
+void MainWindow::on_action_fileSaveCloudAs_triggered()
 {
     // setup file dialog
     QString title = "Select Cloud";
