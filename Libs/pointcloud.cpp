@@ -240,6 +240,8 @@ bool PointCloud::alignToCloud(PointCloud* cloud)
     QVector3D translation(x, y, z);
     QVector3D rotation(angleX, angleY, angleZ);
 
+    rotation = 180*(rotation/M_PI);
+
     currentTranslation_ += translation;
     currentRotation_ += rotation;
 
@@ -388,9 +390,9 @@ void PointCloud::transformPclCloud(float posX, float posY, float posZ, float rot
     transform.translation() << posX, posY, posZ;
 
     // define rotation
-    transform.rotate(Eigen::AngleAxisf(rotX, Eigen::Vector3f::UnitX()));
-    transform.rotate(Eigen::AngleAxisf(rotY, Eigen::Vector3f::UnitY()));
-    transform.rotate(Eigen::AngleAxisf(rotZ, Eigen::Vector3f::UnitZ()));
+    transform.rotate(Eigen::AngleAxisf((rotX/180)*M_PI, Eigen::Vector3f::UnitX()));
+    transform.rotate(Eigen::AngleAxisf((rotY/180)*M_PI, Eigen::Vector3f::UnitY()));
+    transform.rotate(Eigen::AngleAxisf((rotZ/180)*M_PI, Eigen::Vector3f::UnitZ()));
 
     // apply the transformation
     pcl::transformPointCloud(*cloud_, *cloud_, transform);
