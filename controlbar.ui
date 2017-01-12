@@ -23,7 +23,7 @@
    <item>
     <widget class="QTabWidget" name="tabWidget">
      <property name="currentIndex">
-      <number>0</number>
+      <number>1</number>
      </property>
      <widget class="QWidget" name="tab_selector">
       <attribute name="title">
@@ -87,10 +87,10 @@
          <item>
           <widget class="QDoubleSpinBox" name="doubleSpinBox_cloudTranslationX">
            <property name="minimum">
-            <double>-100.000000000000000</double>
+            <double>-1000.000000000000000</double>
            </property>
            <property name="maximum">
-            <double>100.000000000000000</double>
+            <double>1000.000000000000000</double>
            </property>
           </widget>
          </item>
@@ -125,10 +125,10 @@
          <item>
           <widget class="QDoubleSpinBox" name="doubleSpinBox_cloudTranslationY">
            <property name="minimum">
-            <double>-100.000000000000000</double>
+            <double>-1000.000000000000000</double>
            </property>
            <property name="maximum">
-            <double>100.000000000000000</double>
+            <double>1000.000000000000000</double>
            </property>
           </widget>
          </item>
@@ -163,10 +163,10 @@
          <item>
           <widget class="QDoubleSpinBox" name="doubleSpinBox_cloudTranslationZ">
            <property name="minimum">
-            <double>-100.000000000000000</double>
+            <double>-1000.000000000000000</double>
            </property>
            <property name="maximum">
-            <double>100.000000000000000</double>
+            <double>1000.000000000000000</double>
            </property>
           </widget>
          </item>
