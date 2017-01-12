@@ -159,7 +159,7 @@ void CropBox::rotatePclCropBox(CropBox::Axis axis, float theta)
     transform_ = cropBox_.getTransform().inverse();
 
     // theta from degree in radians
-    theta = (theta/180)*M_PI;
+    theta = (theta/180.0)*M_PI;
 
     switch (axis) {
         case AxisX:
