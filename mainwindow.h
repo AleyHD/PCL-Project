@@ -43,6 +43,7 @@ signals:
     void removeCloudOutliers(int, double);
 
     void translateCropBox(double, double, double);
+    void rotateCropBox(double, double, double);
     void cropCloud();
 
 protected:

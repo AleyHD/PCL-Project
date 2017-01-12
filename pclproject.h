@@ -36,6 +36,7 @@ public slots:
     void showControlBar();
 
     void translateCropBox(double x, double y, double z);
+    void rotateCropBox(double x, double y, double z);
     void cropCloud();
 
     // controlbar

@@ -42,6 +42,7 @@ void PclProject::setupMainWindow()
     connect(mainWindow_, SIGNAL(removeCloudOutliers(int, double)), this, SLOT(removeCloudOutliers(int, double)));
 
     connect(mainWindow_, SIGNAL(translateCropBox(double, double, double)), this, SLOT(translateCropBox(double, double, double)));
+    connect(mainWindow_, SIGNAL(rotateCropBox(double, double, double)), this, SLOT(rotateCropBox(double, double, double)));
     connect(mainWindow_, SIGNAL(cropCloud()), this, SLOT(cropCloud()));
 
     connect(mainWindow_, SIGNAL(showControlBar()), this, SLOT(showControlBar()));
@@ -277,6 +278,14 @@ void PclProject::translateCropBox(double x, double y, double z)
 {
     if (!cropBoxEnabled_) return;
     cropBox_->translate(x, y, z);
+}
+
+void PclProject::rotateCropBox(double x, double y, double z)
+{
+    if (!cropBoxEnabled_) return;
+    Q_UNUSED(x);
+    Q_UNUSED(y);
+    cropBox_->rotateDegree(CropBox::AxisZ, z);
 }
 
 void PclProject::cropCloud()

@@ -181,6 +181,8 @@ bool MainWindow::eventFilter(QObject *object, QEvent *event)
 
         // cropBox Movement
         double value = 1.0*cropBoxMovementFactor_;
+        if(keyEvent->key() == Qt::Key_1) emit rotateCropBox(0.0, 0.0, -value);
+        if(keyEvent->key() == Qt::Key_3) emit rotateCropBox(0.0 ,0.0, value);
         if(keyEvent->key() == Qt::Key_4) emit translateCropBox(value, 0.0, 0.0);
         if(keyEvent->key() == Qt::Key_6) emit translateCropBox(-value, 0.0, 0.0);
         if(keyEvent->key() == Qt::Key_8) emit translateCropBox(0.0, -value, 0.0);
