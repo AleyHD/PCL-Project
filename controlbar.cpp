@@ -77,7 +77,9 @@ void ControlBar::on_pushButton_cloudAlign_clicked()
 {
     QString cloud = ui->comboBox_cloudDestination->currentText();
     if (cloud.isEmpty()) return;
-    emit alignToCloud(cloud);
+    int iterations = ui->spinBox_mergerParameter1->value();
+    double distance = ui->doubleSpinBox_mergerParameter2->value();
+    emit alignToCloud(cloud, iterations, distance);
 }
 
 void ControlBar::on_pushButton_cloudAppend_clicked()

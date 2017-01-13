@@ -44,7 +44,7 @@ signals:
     void setActiveCloud(int);
     void hideActiveCloud(bool);
     void setCloudPose(double, double, double, double, double, double);
-    void alignToCloud(QString);
+    void alignToCloud(QString, int, double);
     void appendToCloud(QString);
 
     // cropbox

@@ -60,7 +60,7 @@ void PclProject::setupControlBar()
 
     connect(controlBar_, SIGNAL(setActiveCloud(int)), this, SLOT(setActiveCloud(int)));
     connect(controlBar_, SIGNAL(hideActiveCloud(bool)), this, SLOT(hideActiveCloud(bool)));
-    connect(controlBar_, SIGNAL(alignToCloud(QString)), this, SLOT(alignToCloud(QString)));
+    connect(controlBar_, SIGNAL(alignToCloud(QString, int, double)), this, SLOT(alignToCloud(QString, int, double)));
     connect(controlBar_, SIGNAL(appendToCloud(QString)), this, SLOT(appendToCloud(QString)));
 
     connect(controlBar_, SIGNAL(setCloudPose(double, double, double, double, double, double)), this, SLOT(setCloudPose(double, double, double, double, double, double)));
@@ -346,12 +346,12 @@ void PclProject::removeCloudOutliers(int neighbors, double deviation)
     currentCloud_->removeStatisticalOutliers(neighbors, deviation);
 }
 
-void PclProject::alignToCloud(QString cloudName)
+void PclProject::alignToCloud(QString cloudName, int maximumIterations, double maxCorrespondenceDistance)
 {
     QVector<PointCloud*>::iterator i;
     for (i = clouds_.begin(); i != clouds_.end(); ++i) {
         if((*i)->name() == cloudName) {
-            currentCloud_->alignToCloud((*i));
+            currentCloud_->alignToCloud((*i), maximumIterations, maxCorrespondenceDistance);
             break;
         }
     }

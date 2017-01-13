@@ -52,7 +52,7 @@ public slots:
     void hideActiveCloud(bool checked);
     void setCloudPose(double posX, double posY, double posZ, double rotX, double rotY, double rotZ);
     void removeCloudOutliers(int neighbors, double deviation);
-    void alignToCloud(QString cloudName);
+    void alignToCloud(QString cloudName, int maximumIterations, double maxCorrespondenceDistance);
     void appendToCloud(QString cloudName);
 
     void enableCropBox();

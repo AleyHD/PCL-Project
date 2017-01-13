@@ -40,40 +40,6 @@ size_t PointCloud::points()
     return size;
 }
 
-void PointCloud::setTranslation(float x, float y, float z)
-{
-    QVector3D abs(x, y, z);
-    QVector3D rel(x, y, z);
-
-    // calculate relative value
-    rel -= currentTranslation_;
-
-    // update absolute value
-    currentTranslation_ = abs;
-
-    // manipulate cloud
-    this->translatePclCloud(rel.x(), rel.y(), rel.z());
-}
-
-void PointCloud::translate(float x, float y, float z)
-{
-    QVector3D rel(x, y, z);
-
-    // update abs transform
-    currentTranslation_ += rel;
-
-    this->translatePclCloud(rel.x(), rel.y(), rel.z());
-}
-
-void PointCloud::translateToOrigin()
-{
-    QVector4D centroid = this->compute3DCentroid();
-    this->translate(-centroid.x(), -centroid.y(), -centroid.z());
-
-    // publish changes
-    emit updated();
-}
-
 void PointCloud::applyVoxelGrid(float voxelDistance)
 {
     pcl::VoxelGrid<PointT> voxelGrid;
@@ -87,65 +53,47 @@ void PointCloud::applyVoxelGrid(float voxelDistance)
     emit updated();
 }
 
-void PointCloud::setRotationDegree(Axis axis, float angle)
-{
-    float rel = angle;
-
-    switch (axis) {
-        case AxisX:
-            rel -= currentRotation_.x();
-            currentRotation_.setX(angle);
-            break;
-        case AxisY:
-            rel -= currentRotation_.y();
-            currentRotation_.setY(angle);
-            break;
-        case AxisZ:
-            rel -= currentRotation_.z();
-            currentRotation_.setZ(angle);
-            break;
-    }
-
-    // manipulate cloud
-    this->rotatePclCloud(axis, rel);
-}
-
-void PointCloud::rotateDegree(Axis axis, float angle)
-{
-    // update abs rotation
-    switch (axis) {
-        case AxisX:
-            currentRotation_.setX(currentRotation_.x() + angle);
-            break;
-        case AxisY:
-            currentRotation_.setY(currentRotation_.y() + angle);
-            break;
-        case AxisZ:
-            currentRotation_.setZ(currentRotation_.y() + angle);
-            break;
-    }
-
-    // manipulate cloud
-    this->rotatePclCloud(axis, angle);
-}
-
 void PointCloud::setPose(float posX, float posY, float posZ, float rotX, float rotY, float rotZ)
 {
-    QVector3D posAbs(posX, posY, posZ);
+    /* reset rotation -> apply translation */
+
+    // setup Identity Matrix
+    Eigen::Affine3f transform = Eigen::Affine3f::Identity();
+
+    // define translation
     QVector3D posRel(posX, posY, posZ);
-    QVector3D rotAbs(rotX, rotY, rotZ);
-    QVector3D rotRel(rotX, rotY, rotZ);
-
-    // calculate relative value
     posRel -= currentTranslation_;
-    rotRel -= currentRotation_;
+    transform.translation() << posRel.x(), posRel.y(), posRel.z();
 
-    this->transformPclCloud(posRel.x(), posRel.y(), posRel.z(), rotAbs.x(), rotAbs.y(), rotAbs.z());
+    // define rotation
+    transform.rotate(Eigen::AngleAxisf((-currentRotation_.z()/180.0)*M_PI, Eigen::Vector3f::UnitZ()));
+    transform.rotate(Eigen::AngleAxisf((-currentRotation_.y()/180.0)*M_PI, Eigen::Vector3f::UnitY()));
+    transform.rotate(Eigen::AngleAxisf((-currentRotation_.x()/180.0)*M_PI, Eigen::Vector3f::UnitX()));
+
+    // apply the transformation
+    pcl::transformPointCloud(*cloud_, *cloud_, transform);
+
+    /* reset rotation -> apply rotation */
+
+    // setup Identity Matrix
+    transform = Eigen::Affine3f::Identity();
+
+    // define rotation
+    transform.rotate(Eigen::AngleAxisf((rotX/180.0)*M_PI, Eigen::Vector3f::UnitX()));
+    transform.rotate(Eigen::AngleAxisf((rotY/180.0)*M_PI, Eigen::Vector3f::UnitY()));
+    transform.rotate(Eigen::AngleAxisf((rotZ/180.0)*M_PI, Eigen::Vector3f::UnitZ()));
+
+    // apply the transformation
+    pcl::transformPointCloud(*cloud_, *cloud_, transform);
 
     // update absolute value
+    QVector3D posAbs(posX, posY, posZ);
+    QVector3D rotAbs(rotX, rotY, rotZ);
     currentTranslation_ = posAbs;
     currentRotation_ = rotAbs;
 
+    // publish changes
+    emit updated();
 }
 
 void PointCloud::extractPlane(PointCloud *outputPlane, int maxIterations, double distanceThreshold, double cloudThreshold, bool cut)
@@ -220,17 +168,18 @@ QVector4D PointCloud::compute3DCentroid()
     return qCentroid;
 }
 
-bool PointCloud::alignToCloud(PointCloud* cloud)
+bool PointCloud::alignToCloud(PointCloud* cloud, int maximumIterations, float maxCorrespondenceDistance)
 {
     // set parameters
     pcl::IterativeClosestPoint<PointT, PointT> icp;
-    icp.setMaximumIterations(100);
-    icp.setMaxCorrespondenceDistance(1.0);
+    icp.setMaximumIterations(maximumIterations);
+    icp.setMaxCorrespondenceDistance(maxCorrespondenceDistance);
     icp.setInputSource(cloud_);
     icp.setInputTarget(cloud->pclCloud());
 
     // align cloud
-    icp.align(*cloud_);
+    pcl::PointCloud<PointT> icpCloud;
+    icp.align(icpCloud);
 
     // get transformation
     Eigen::Matrix4f transform4f =  icp.getFinalTransformation();
@@ -239,14 +188,15 @@ bool PointCloud::alignToCloud(PointCloud* cloud)
     pcl::getTranslationAndEulerAngles(transform, x, y, z, angleX, angleY, angleZ);
 
     // save transformation
-
     QVector3D translation(x, y, z);
     QVector3D rotation(angleX, angleY, angleZ);
 
     rotation = 180.0*(rotation/M_PI);
 
-    currentTranslation_ += translation;
-    currentRotation_ += rotation;
+    translation += currentTranslation_;
+    rotation += currentRotation_;
+
+    this->setPose(translation.x(), translation.y(), translation.z(), rotation.x(), rotation.y(), rotation.z());
 
     // publish changes
     emit updated();
@@ -339,74 +289,6 @@ QString PointCloud::transformString()
 void PointCloud::setPclCloud(pcl::PointCloud<PointT>::Ptr cloud)
 {
     cloud_ = cloud;
-
-    // publish changes
-    emit updated();
-}
-
-void PointCloud::translatePclCloud(float x, float y, float z)
-{
-    // setup Identity Matrix
-    Eigen::Affine3f transform = Eigen::Affine3f::Identity();
-
-    // Define a translation of x, y, z meters.
-    transform.translation() << x, y, z;
-
-    // Executing the transformation
-    pcl::transformPointCloud(*cloud_, *cloud_, transform);
-
-    // publish changes
-    emit updated();
-}
-
-void PointCloud::rotatePclCloud(PointCloud::Axis axis, float theta)
-{
-    // setup Identity Matrix
-    Eigen::Affine3f transform = Eigen::Affine3f::Identity();
-    // theta from degree in radians
-    theta = (theta/180.0)*M_PI;
-
-    switch (axis) {
-    case AxisX:
-        transform.rotate(Eigen::AngleAxisf(theta, Eigen::Vector3f::UnitX()));
-        break;
-    case AxisY:
-        transform.rotate(Eigen::AngleAxisf (theta, Eigen::Vector3f::UnitY()));
-        break;
-    case AxisZ:
-        transform.rotate(Eigen::AngleAxisf (theta, Eigen::Vector3f::UnitZ()));
-        break;
-    }
-    // Executing the transformation
-    pcl::transformPointCloud (*cloud_, *cloud_, transform);
-
-    // publish changes
-    emit updated();
-}
-
-void PointCloud::transformPclCloud(float posX, float posY, float posZ, float rotX, float rotY, float rotZ)
-{
-    // setup Identity Matrix
-    Eigen::Affine3f transform = Eigen::Affine3f::Identity();
-
-    // define translation
-    transform.translation() << posX, posY, posZ;
-
-    transform.rotate(Eigen::AngleAxisf((-currentRotation_.z()/180.0)*M_PI, Eigen::Vector3f::UnitZ()));
-    transform.rotate(Eigen::AngleAxisf((-currentRotation_.y()/180.0)*M_PI, Eigen::Vector3f::UnitY()));
-    transform.rotate(Eigen::AngleAxisf((-currentRotation_.x()/180.0)*M_PI, Eigen::Vector3f::UnitX()));
-
-    pcl::transformPointCloud(*cloud_, *cloud_, transform);
-
-    Eigen::Affine3f transform2 = Eigen::Affine3f::Identity();
-
-    // define rotation
-    transform2.rotate(Eigen::AngleAxisf((rotX/180.0)*M_PI, Eigen::Vector3f::UnitX()));
-    transform2.rotate(Eigen::AngleAxisf((rotY/180.0)*M_PI, Eigen::Vector3f::UnitY()));
-    transform2.rotate(Eigen::AngleAxisf((rotZ/180.0)*M_PI, Eigen::Vector3f::UnitZ()));
-
-    // apply the transformation
-    pcl::transformPointCloud(*cloud_, *cloud_, transform2);
 
     // publish changes
     emit updated();

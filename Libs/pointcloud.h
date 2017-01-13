@@ -40,17 +40,12 @@ public:
     void loadFile(const QString &filePath);
     void saveFile(const QString &filePath);
     void saveFile();
-    void setTranslation(float x, float y, float z);
-    void translate(float x, float y, float z);
-    void translateToOrigin();
     void applyVoxelGrid(float voxelDistance);
-    void setRotationDegree(Axis axis, float angle);
-    void rotateDegree(Axis axis, float angle);
     void setPose(float posX, float posY, float posZ, float rotX, float rotY, float rotZ);
     void extractPlane(PointCloud *outputPlane, int maxIterations = 100, double distanceThreshold = 1.0, double cloudThreshold = 0.3, bool cut = true);
     void removeStatisticalOutliers(int neighbors = 50, double deviationThreshold = 1.0);
     QVector4D compute3DCentroid();
-    bool alignToCloud(PointCloud *cloud);
+    bool alignToCloud(PointCloud *cloud, int maximumIterations = 10, float maxCorrespondenceDistance = 1.0);
     void appendCloud(PointCloud *cloud2Add);
     void appendCloudSBS(PointCloud *cloud2AddSBS);
     bool loadTransformFromFile(const QString &filePath);

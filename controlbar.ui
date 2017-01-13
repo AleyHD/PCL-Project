@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>391</width>
-    <height>186</height>
+    <height>246</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -21,55 +21,42 @@
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
+    <layout class="QVBoxLayout" name="verticalLayout_selectorActiveCloud">
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout_cloudSetActiveCloud">
+       <item>
+        <widget class="QLabel" name="label_cloudSetActiveCloud">
+         <property name="text">
+          <string>Select Active Cloud:</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QComboBox" name="comboBox_cloudSetActiveCloud">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+     <item>
+      <widget class="QCheckBox" name="checkBox_cloudHideCloud">
+       <property name="text">
+        <string>Hide Active Cloud</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
     <widget class="QTabWidget" name="tabWidget">
      <property name="currentIndex">
       <number>0</number>
      </property>
-     <widget class="QWidget" name="tab_selector">
-      <attribute name="title">
-       <string>Selector</string>
-      </attribute>
-      <layout class="QVBoxLayout" name="verticalLayout_2">
-       <item>
-        <layout class="QVBoxLayout" name="verticalLayout_selectorActiveCloud">
-         <item>
-          <layout class="QHBoxLayout" name="horizontalLayout_cloudSetActiveCloud">
-           <item>
-            <widget class="QLabel" name="label_cloudSetActiveCloud">
-             <property name="text">
-              <string>Select Active Cloud:</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QComboBox" name="comboBox_cloudSetActiveCloud"/>
-           </item>
-          </layout>
-         </item>
-         <item>
-          <widget class="QCheckBox" name="checkBox_cloudHideCloud">
-           <property name="text">
-            <string>Hide Active Cloud</string>
-           </property>
-          </widget>
-         </item>
-        </layout>
-       </item>
-       <item>
-        <spacer name="verticalSpacer_selector">
-         <property name="orientation">
-          <enum>Qt::Vertical</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>20</width>
-           <height>40</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
-      </layout>
-     </widget>
      <widget class="QWidget" name="tab_mover">
       <attribute name="title">
        <string>Mover</string>
@@ -213,7 +200,62 @@
           </widget>
          </item>
          <item>
-          <widget class="QComboBox" name="comboBox_cloudDestination"/>
+          <widget class="QComboBox" name="comboBox_cloudDestination">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <layout class="QHBoxLayout" name="horizontalLayout_mergerParameter1">
+         <item>
+          <widget class="QLabel" name="label_mergerParameter1">
+           <property name="text">
+            <string>Maximum Iterations:</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QSpinBox" name="spinBox_mergerParameter1">
+           <property name="minimum">
+            <number>1</number>
+           </property>
+           <property name="maximum">
+            <number>1000</number>
+           </property>
+           <property name="value">
+            <number>10</number>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <layout class="QHBoxLayout" name="horizontalLayout_mergerParameter2">
+         <item>
+          <widget class="QLabel" name="label_mergerParameter2">
+           <property name="text">
+            <string>Correspondence Distance:</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QDoubleSpinBox" name="doubleSpinBox_mergerParameter2">
+           <property name="minimum">
+            <double>0.010000000000000</double>
+           </property>
+           <property name="maximum">
+            <double>10.000000000000000</double>
+           </property>
+           <property name="value">
+            <double>1.000000000000000</double>
+           </property>
+          </widget>
          </item>
         </layout>
        </item>
