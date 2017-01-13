@@ -223,6 +223,8 @@ bool PointCloud::alignToCloud(PointCloud* cloud)
 {
     // set parameters
     pcl::IterativeClosestPoint<PointT, PointT> icp;
+    icp.setMaximumIterations(100);
+    icp.setMaxCorrespondenceDistance(1.0);
     icp.setInputSource(cloud_);
     icp.setInputTarget(cloud->pclCloud());
 
